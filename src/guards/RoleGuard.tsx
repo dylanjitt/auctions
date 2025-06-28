@@ -1,14 +1,13 @@
 import { type ReactNode, useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { UserContext } from '../context/UserContext'; 
 
 interface RoleGuardProps {
-  children: ReactNode;
   allowedRoles: string[];
   redirectTo?: string;
 }
 
-export const RoleGuard: React.FC<RoleGuardProps> = ({ children, allowedRoles, redirectTo = '/login' }) => {
+export const RoleGuard: React.FC<RoleGuardProps> = ({ allowedRoles, redirectTo = '/login' }) => {
   const userContext = useContext(UserContext);
 
   if (!userContext?.user) {
@@ -19,5 +18,5 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({ children, allowedRoles, re
     return <Navigate to="/home" replace />; // Default redirection for unauthorized roles
   }
 
-  return <>{children}</>;
+  return <Outlet/>;
 };

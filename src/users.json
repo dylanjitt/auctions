@@ -1,25 +1,29 @@
 {
-  "users":[
-  {
-    "id": 1,
-    "username": "juanito",
-    "usuario": "juanito",
-    "rol": "user",
-    "avatar": "https://i.pravatar.cc/150?u=juanito"
-  },
-  {
-    "id": 2,
-    "username": "admin1",
-    "usuario": "admin1",
-    "rol": "admin",
-    "avatar": "https://i.pravatar.cc/150?u=admin1"
-  },
-  {
-    "id": 3,
-    "username": "maria",
-    "usuario": "maria",
-    "rol": "user",
-    "avatar": "https://i.pravatar.cc/150?u=maria"
-  }
-]
+  "users": [
+    {
+      "id": "1",
+      "username": "juanito",
+      "rol": "user",
+      "avatar": "https://i.pravatar.cc/150?u=juanito"
+    },
+    {
+      "id": "2",
+      "username": "admin1",
+      "rol": "admin",
+      "avatar": "https://i.pravatar.cc/150?u=admin1"
+    },
+    {
+      "id": "3",
+      "username": "maria",
+      "rol": "user",
+      "avatar": "https://i.pravatar.cc/150?u=maria"
+    },
+    {
+      "id": "6a7e",
+      "username": "shadow",
+      "rol": "user",
+      "avatar": "https://i.pravatar.cc/150?u=shadow",
+      "usuario": "shadow"
+    }
+  ]
 }

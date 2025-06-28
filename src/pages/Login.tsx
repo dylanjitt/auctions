@@ -48,15 +48,14 @@ function LoginPage () {
         const dir = responseLogin.rol==='admin'?'/admin':'/home'
 
         console.log(dir)
-        
-        // loginUser(responseLogin);
+
        
         navigate(dir, {
           replace: true,
         });
         
       } catch (error) {
-        console.error("Login error:", error); // Debug log
+        console.error("Login error:", error); 
         setLoginError(true);
         if(error instanceof Error){
           seterrorMessage(error.message)

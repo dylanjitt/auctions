@@ -3,36 +3,47 @@ import LoginPage from "../pages/Login"
 import { RoleGuard } from "../guards/RoleGuard"
 import Home from "../pages/Home"
 import AdminPanel from "../pages/AdminPanel"
+import AuthGuard from "../guards/AuthGuard"
+import { Layout } from "../layout/Layout"
+import AuctionRoom from "../pages/AuctionRoom"
+import UserAdmin from "../pages/UserAdmin"
+import RegisterPage from "../pages/RegisterUser"
 
-export const AppRoutes = () =>{
-  return(
+export const AppRoutes = () => {
+  return (
     <BrowserRouter>
-    <Routes>
-    <Route path="/" element={<Navigate to="/login" replace />} />
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<></>/* TODO: add Register page */} />
+        <Route path="/register" element={<RegisterPage/>} />
 
-        {/* Ruta protegida para usuarios con rol "user" */}
-        <Route
-          path="/home"
-          element={
-            <RoleGuard allowedRoles={['user']}>
-              <Home />
-            </RoleGuard>
-          }
-        />
+        <Route element={
+          <AuthGuard>
+            <Layout />
+          </AuthGuard>
+        }>
+          {/* Role: USER */}
+          <Route element={<RoleGuard allowedRoles={['user']} />}>
+            <Route path="/home">
+              <Route index element={<Home />} />
+              <Route path="auction/:id" element={<AuctionRoom />} />
+              <Route path="*" element={<Navigate to="/home" replace />} />
+            </Route>
+          </Route>
 
-        {/* Ruta protegida solo para administradores */}
-        <Route
-          path="/admin"
-          element={
-            <RoleGuard allowedRoles={['admin']}>
-              <AdminPanel />
-            </RoleGuard>
-          }
-        />
+          {/* Role: ADMIN */}
+          <Route element={<RoleGuard allowedRoles={['admin']} />}>
+            <Route path="/admin">
+              <Route index element={<AdminPanel />} />
+              <Route path="userAdmin" element={<UserAdmin />} />
+              <Route path="*" element={<Navigate to="/admin" replace />} />
+            </Route>
+          </Route>
+        </Route>
 
-    </Routes>
+
+
+      </Routes>
     </BrowserRouter>
   )
 }
