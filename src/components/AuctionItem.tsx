@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -8,9 +8,15 @@ import Typography from '@mui/material/Typography';
 import { useCountdown } from '../hooks/useAuction';
 import Timer from './Timer';
 import type { Product } from '../interfaces/productInterface';
+import React from 'react';
 
 interface AuctionItemProps {
   product: Product;
+  children?: ReactNode; // Add children prop
+}
+
+interface ActionsProps {
+  children?: ReactNode;
 }
 
 export const AuctionItem: FC<AuctionItemProps> & {
@@ -18,8 +24,8 @@ export const AuctionItem: FC<AuctionItemProps> & {
   Content: FC<Pick<Product, 'titulo' | 'descripcion' | 'precioBase'>>;
   TimerSection: FC<Pick<Product, 'duracion' | 'fechaInicio'>>;
   Actions: FC;
-} = ({ product }) => (
-  <Card sx={{ width: 370, height:550 }}>
+} = React.memo(({ product,children }:AuctionItemProps) => (
+  <Card sx={{ width: 370, height:570 }}>
     <AuctionItem.Image src={product.imagen} title={product.titulo} />
     <AuctionItem.Content
       titulo={product.titulo}
@@ -30,9 +36,9 @@ export const AuctionItem: FC<AuctionItemProps> & {
       duracion={product.duracion}
       fechaInicio={product.fechaInicio}
     />
-    <AuctionItem.Actions />
+    {children || <AuctionItem.Actions />}
   </Card>
-);
+));
 
 AuctionItem.Image = ({ src, title }) => (
   <CardMedia sx={{ height: 280 }} image={src} title={title} />
@@ -52,93 +58,43 @@ AuctionItem.Content = ({ titulo, descripcion, precioBase }) => (
   </CardContent>
 );
 
-// TimerSection uses useCountdown for both upcoming and active auctions
-// AuctionItem.TimerSection = ({ duracion, fechaInicio }) => {
-//   const now = Date.now();
-//   const startMs = new Date(fechaInicio).getTime();
-//   const endMs = startMs + duracion * 1000;
-
-//   if (now < startMs) {
-//     // Upcoming: countdown to start
-//     const secondsToStart = Math.ceil((startMs - now) / 1000);
-//     const startCountdown = useCountdown(secondsToStart, new Date().toISOString());
-//     const remainingStartSec = Math.ceil(startCountdown / 1000);
-
-//     return (
-//       <CardContent>
-//         <Typography variant="body2" color="text.primary">
-//           Subasta comienza en:
-//         </Typography>
-//         <Timer remainingSeconds={remainingStartSec} />
-//       </CardContent>
-//     );
-//   }
-
-//   if (now >= startMs && now <= endMs) {
-//     // Active: countdown to end
-//     const activeCountdown = useCountdown(duracion, fechaInicio);
-//     const remainingEndSec = Math.ceil(activeCountdown / 1000);
-
-//     return (
-//       <CardContent>
-//         <Typography variant="body2" color="text.secondary">
-//           Tiempo restante:
-//         </Typography>
-//         <Timer remainingSeconds={remainingEndSec} />
-//       </CardContent>
-//     );
-//   }
-
-//   // Closed
-//   return (
-//     <CardContent>
-//       <Typography variant="body2" color="error">
-//         Subasta cerrada
-//       </Typography>
-//     </CardContent>
-//   );
-// };
 AuctionItem.TimerSection = ({ duracion, fechaInicio }) => {
   const now = Date.now();
   const startMs = new Date(fechaInicio).getTime();
   const endMs = startMs + duracion * 1000;
 
+  // Only call useCountdown when actually needed
+  const remainingMs = now >= startMs && now <= endMs 
+    ? useCountdown(duracion, fechaInicio)
+    : 0;
+
   if (now < startMs) {
-    // Upcoming: display exact start date/time
-    const startDate = new Date(fechaInicio);
-    const formatted = startDate.toLocaleString();
+    const formatted = new Date(fechaInicio).toLocaleString();
     return (
       <CardContent>
-        <Typography variant="body2" color="text.primary">
-          Subasta comienza el: {formatted}
-        </Typography>
+        <Typography>Subasta comienza el: {formatted}</Typography>
       </CardContent>
     );
   }
 
-  if (now >= startMs && now <= endMs) {
-    // Active: countdown to end
-    const remainingMs = useCountdown(duracion, fechaInicio);
-    const remainingSec = Math.ceil(remainingMs / 1000);
+  if (now <= endMs) {
     return (
       <CardContent>
-        <Timer remainingSeconds={remainingSec} />
+        <Timer remainingSeconds={Math.ceil(remainingMs / 1000)} />
       </CardContent>
     );
   }
 
-  // Closed
   return (
     <CardContent>
-      <Typography variant="body2" color="error">
-        Subasta cerrada
-      </Typography>
+      <Typography color="error">Subasta cerrada</Typography>
     </CardContent>
   );
 };
 
-AuctionItem.Actions = () => (
+// Updated Actions component to accept children
+AuctionItem.Actions = ({ children }: ActionsProps) => (
   <CardActions>
-    <Button size="small">Ver</Button>
+    {children || <Button size="small">Ver</Button>}
   </CardActions>
 );

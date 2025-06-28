@@ -21,7 +21,7 @@ export const productService = {
     }
   },
 
-  async createProduct(product: Omit<Product, "id">): Promise<Product> {
+  async createProduct(product: Product): Promise<Product> {
     try {
       const response = await jsonServerProductInstance.post("/products", product);
       return response.data;

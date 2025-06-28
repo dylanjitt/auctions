@@ -1,22 +1,29 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
 export const useCountdown = (duration: number, startTime: string) => {
+  const [remaining, setRemaining] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  // Alternative implementation
+useEffect(() => {
   const endTimestamp = new Date(startTime).getTime() + duration * 1000;
-  const [remaining, setRemaining] = useState(endTimestamp - Date.now());
-  const rafRef = useRef<number>(null);
-
-  const update = useCallback(() => {
+  
+  const update = () => {
     const diff = endTimestamp - Date.now();
-    setRemaining(diff > 0 ? diff : 0);
+    setRemaining(Math.max(0, diff));
+    
     if (diff > 0) {
-      rafRef.current = requestAnimationFrame(update);
+      const timeout = setTimeout(update, 1000); // Update every second instead of every frame
+      return () => clearTimeout(timeout);
     }
-  }, [endTimestamp]);
+  };
 
-  useEffect(() => {
-    rafRef.current = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(rafRef.current!);
-  }, [update]);
+  update();
+}, [duration, startTime]);
 
   return remaining;
+};
+
+export const useAuction = () => {
+  return { useCountdown };
 };
