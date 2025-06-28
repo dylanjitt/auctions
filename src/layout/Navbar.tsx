@@ -24,7 +24,7 @@ const NavBar: React.FC = () => {
     <AppBar position="static">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Typography variant="h6" component="div">
-          Subasta Online
+          Hola, {user?.username}
         </Typography>
 
         {user && (

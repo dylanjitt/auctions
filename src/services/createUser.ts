@@ -11,7 +11,7 @@ export const register = async (user: RegisterUser) => {
   const newUser = {
     ...user,
     usuario: user.username,
-    avatar: user.avatar || `https://i.pravatar.cc/150?u=${user.username}`,
+    avatar: user.avatar || `https://ui-avatars.com/api/?name${user.username}`,
   };
 
   const response = await jsonServerInstance.post('/users', newUser);

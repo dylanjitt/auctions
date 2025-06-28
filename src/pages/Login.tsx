@@ -92,7 +92,7 @@ function LoginPage () {
             sx={{ objectFit: 'contain' }}
             alt="Gasolina Ya Logo"
           /> */}
-          <h1>Login</h1>
+          <h1>Subasta Ya</h1>
           
           <form onSubmit={formik.handleSubmit}>
             <TextField

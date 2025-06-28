@@ -4,26 +4,33 @@
       "id": "1",
       "username": "juanito",
       "rol": "user",
-      "avatar": "https://i.pravatar.cc/150?u=juanito"
+      "avatar": "https://ui-avatars.com/api/?name=juanito"
     },
     {
       "id": "2",
       "username": "admin1",
       "rol": "admin",
-      "avatar": "https://i.pravatar.cc/150?u=admin1"
+      "avatar": "https://ui-avatars.com/api/?name=admin1"
     },
     {
       "id": "3",
       "username": "maria",
       "rol": "user",
-      "avatar": "https://i.pravatar.cc/150?u=maria"
+      "avatar": "https://ui-avatars.com/api/?name=maria"
     },
     {
       "id": "6a7e",
       "username": "shadow",
       "rol": "user",
-      "avatar": "https://i.pravatar.cc/150?u=shadow",
+      "avatar": "https://ui-avatars.com/api/?name=shadow",
       "usuario": "shadow"
+    },
+    {
+      "id": "151a",
+      "username": "keanu",
+      "rol": "admin",
+      "avatar": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR-USyI8VIxs8XSqJ5JOPwSEobozghRsN5yMgvLg7Ev9qfttsnjsPgyEpa7je9OHdgf3C-arTy8eFAVJpqTrNTt2A",
+      "usuario": "keanu"
     }
   ]
 }

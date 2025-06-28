@@ -1,15 +1,12 @@
 import React, { createContext, useState, useContext, type ReactNode, useEffect } from 'react';
 
-// Your User interface
 export interface User {
   id: number;
   username: string;
-  usuario: string;
   rol: string;
   avatar: string;
 }
 
-// Define the shape of the context value
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;

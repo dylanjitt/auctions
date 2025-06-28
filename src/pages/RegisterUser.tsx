@@ -31,7 +31,7 @@ function RegisterPage() {
     validationSchema: registerSchema,
     onSubmit: async (values) => {
       try {
-        const r =await register(values);
+        await register(values);
         alert("Usuario registrado con éxito");
         navigate("/login");
       } catch (error) {
@@ -54,9 +54,9 @@ function RegisterPage() {
             borderRadius: 5,
           }}
         >
-          <Typography variant="h4" gutterBottom>
-            Crear Cuenta
-          </Typography>
+          
+           <h1>Crear Cuenta</h1>
+          
 
           <form onSubmit={formik.handleSubmit}>
             {/* Username */}
