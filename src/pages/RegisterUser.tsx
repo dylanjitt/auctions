@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CardContent,
+  CircularProgress,
   Container,
   MenuItem,
   Select,
@@ -11,18 +12,22 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { register } from "../services/createUser";
+import { userService } from "../services/userService";
 import { uploadToCloudinary } from "../util/uploader";
+import { useCallback, useState } from "react";
 
 const registerSchema = yup.object({
   username: yup.string().required("El username es requerido"),
   rol: yup.string().oneOf(["admin", "user"]).required("El rol es requerido"),
-  avatar: yup.string().url("Debe ser una URL válida").nullable(),
+  avatar: yup.string()
+  //.url("Debe ser una URL válida")
+  .nullable(),
 });
 
 function RegisterPage() {
   const navigate = useNavigate();
-
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -32,7 +37,7 @@ function RegisterPage() {
     validationSchema: registerSchema,
     onSubmit: async (values) => {
       try {
-        await register(values);
+        await userService.createUser(values);
         alert("Usuario registrado con éxito");
         navigate("/login");
       } catch (error) {
@@ -42,15 +47,47 @@ function RegisterPage() {
     }
   });
 
+  // const handleFileUpload = async (file: File) => {
+  //   try {
+  //     const imageUrl = await uploadToCloudinary(file);
+  //     formik.setFieldValue("avatar", imageUrl);
+  //   } catch (error) {
+  //     console.error("Error uploading image:", error);
+  //     alert("Error al subir la imagen");
+  //   }
+  // };
   const handleFileUpload = async (file: File) => {
+    if (!file) return;
     try {
+      setIsUploading(true);
+  
+      // preview...
+      const reader = new FileReader();
+      reader.onload = e => setPreviewImage(e.target?.result as string);
+      reader.readAsDataURL(file);
+  
+      // actual upload:
       const imageUrl = await uploadToCloudinary(file);
       formik.setFieldValue("avatar", imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
       alert("Error al subir la imagen");
+    } finally {
+      setIsUploading(false);
     }
   };
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      handleFileUpload(file);
+    }
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  }, []);
 
   return (
     <Container maxWidth="xs">
@@ -123,15 +160,10 @@ function RegisterPage() {
               error={formik.touched.avatar && Boolean(formik.errors.avatar)}
               sx={{ marginBottom: 3 }}
             /> */}
+            {/* Avatar Upload */}
             <Box
-              onDrop={(e) => {
-                e.preventDefault();
-                const file = e.dataTransfer.files?.[0];
-                if (file && file.type.startsWith("image/")) {
-                  handleFileUpload(file);
-                }
-              }}
-              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
               sx={{
                 border: "2px dashed #1E8BC3",
                 borderRadius: 2,
@@ -140,22 +172,36 @@ function RegisterPage() {
                 marginBottom: 3,
                 cursor: "pointer",
                 backgroundColor: "#f8f8f8",
+                minHeight: 150,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 1,
               }}
             >
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Arrastra y suelta tu imagen aquí
-              </Typography>
-
-              {formik.values.avatar ? (
+              {isUploading ? (
+                <CircularProgress />
+              ) : previewImage || formik.values.avatar ? (
                 <img
-                  src={formik.values.avatar}
-                  alt="Avatar"
-                  style={{ width: 100, height: 100, borderRadius: "50%" }}
+                  src={previewImage || formik.values.avatar}
+                  alt="Avatar preview"
+                  style={{ 
+                    width: 100, 
+                    height: 100, 
+                    borderRadius: "50%",
+                    objectFit: "cover" 
+                  }}
                 />
               ) : (
-                <Typography variant="caption" color="text.secondary">
-                  O haz clic para seleccionar
-                </Typography>
+                <>
+                  <Typography variant="body2" sx={{ mb: 1 }}>
+                    Arrastra y suelta tu imagen aquí
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    O haz clic para seleccionar
+                  </Typography>
+                </>
               )}
 
               <input
@@ -175,7 +221,7 @@ function RegisterPage() {
                   variant="outlined"
                   sx={{ mt: 1 }}
                 >
-                  Seleccionar imagen
+                  {previewImage || formik.values.avatar ? "Cambiar imagen" : "Seleccionar imagen"}
                 </Button>
               </label>
             </Box>

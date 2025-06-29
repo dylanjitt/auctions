@@ -4,8 +4,6 @@ import * as yup from 'yup';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import type { Product } from '../interfaces/productInterface';
-import { v4 as uuidv4 } from 'uuid';
-// const { v4: uuidv4 } = require('uuid');
 interface Props {
   open: boolean;
   product: Product | null;
@@ -181,7 +179,7 @@ const BidForm: FC<Props> = ({ open, product, onClose, onSave }) => {
               }
             }}
             minDateTime={!product ? new Date() : undefined} 
-            renderInput={(params) => 
+            renderInput={(params:any) => 
               <TextField 
                 {...params} 
                 margin="dense" 

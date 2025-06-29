@@ -20,6 +20,10 @@ const NavBar: React.FC = () => {
     navigate('/login');
   };
 
+
+  const handleUserHistory = () => navigate('/home/bidHistory');
+  const handleUserManagement = () => navigate('/admin/userAdmin');
+
   return (
     <AppBar position="static">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -28,21 +32,45 @@ const NavBar: React.FC = () => {
         </Typography>
 
         {user && (
-          <Box>
-            <IconButton onClick={handleAvatarClick} size="small" sx={{ ml: 2 }}>
-              <Avatar alt={user.username} src={user.avatar} />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              onClick={handleClose}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-              <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
-            </Menu>
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            
+            {user.rol === 'user' && (
+              <Button 
+                variant="text" 
+                onClick={handleUserHistory}
+                sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
+              >
+                Mis Compras
+              </Button>
+            )}
+            
+            {user.rol === 'admin' && (
+              <Button 
+                variant="text" 
+                onClick={handleUserManagement}
+                sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
+              >
+                Gestión de Usuarios
+              </Button>
+            )}
+
+            <Box>
+              <IconButton onClick={handleAvatarClick} size="small" sx={{ ml: 2 }}>
+                <Avatar alt={user.username} src={user.avatar} />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                onClick={handleClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+              </Menu>
+            </Box>
           </Box>
+
         )}
       </Toolbar>
     </AppBar>

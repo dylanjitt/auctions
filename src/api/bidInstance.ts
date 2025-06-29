@@ -1,7 +1,8 @@
 import axios from "axios";
-
+const API_URL = import.meta.env.VITE_BID_URL;
+console.log("API_URL3:", API_URL);
 const bidInstance = axios.create({
-  baseURL: "http://localhost:3003/api", // <-- Aquí va el HOST del otro backend
+  baseURL: API_URL, // <-- Aquí va el HOST del otro backend
   headers: {
     "Content-Type": "application/json"
   }

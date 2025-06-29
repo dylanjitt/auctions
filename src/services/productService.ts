@@ -65,5 +65,4 @@ export const productService = {
     const response = await jsonServerProductInstance.get(`/bids?productId=${productId}&_sort=timestamp&_order=desc`);
     return response.data;
   }
-
 }

@@ -38,6 +38,18 @@
       "rol": "user",
       "usuario": "peso deidad",
       "avatar": "https://ui-avatars.com/api/?name=peso deidad"
+    },
+    {
+      "id": "393b",
+      "username": "PesoPluma",
+      "rol": "user",
+      "avatar": "https://ui-avatars.com/api/?name=PesoPluma"
+    },
+    {
+      "id": "e5b4",
+      "username": "Peso Deidad",
+      "rol": "user",
+      "avatar": "https://res.cloudinary.com/dampoknh7/image/upload/v1751213256/images_ouhz9a.jpg"
     }
   ]
 }

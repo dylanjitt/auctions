@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.3",
+    "@cloudinary/url-gen": "^1.21.0",
     "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -21,6 +23,7 @@
     "@mui/x-date-pickers-pro": "^8.6.0",
     "@types/uuid": "^10.0.0",
     "axios": "^1.10.0",
+    "cloudinary": "^2.7.0",
     "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "json-server": "^1.0.0-beta.3",

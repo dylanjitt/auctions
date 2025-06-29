@@ -8,6 +8,7 @@ import { Layout } from "../layout/Layout"
 import AuctionRoom from "../pages/AuctionRoom"
 import UserAdmin from "../pages/UserAdmin"
 import RegisterPage from "../pages/RegisterUser"
+import BidHistory from "../pages/BidHistory"
 
 export const AppRoutes = () => {
   return (
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
             <Route path="/home" >
               <Route index element={<Home />} />
               <Route path="auction/:id" element={<AuctionRoom />} />
+              <Route path="bidHistory" element={<BidHistory/>}/>
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Route>
           </Route>
