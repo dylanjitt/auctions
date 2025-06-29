@@ -1,17 +1,24 @@
+// components/AuctionRoom.tsx
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../services/productService";
 import type { Product } from "../interfaces/productInterface";
 import { UserContext } from '../context/UserContext';
 import { useAuction } from '../hooks/useAuction';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, Paper, Alert } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, Paper, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Timer from '../components/Timer';
 import { useCountdown } from "../hooks/useAuction";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import type { Bid } from "../interfaces/bidInterface";
 
-// --- Validation Schema Factory ---
+interface BidEntry {
+  user: string;
+  amount: number;
+  timestamp: string;
+}
+
 const getBidValidationSchema = (currentPrice: number) =>
   Yup.object({
     bidAmount: Yup.number()
@@ -20,7 +27,6 @@ const getBidValidationSchema = (currentPrice: number) =>
       .moreThan(currentPrice, `Bid must be higher than current price ($${currentPrice})`),
   });
 
-// --- Main Auction Room Component ---
 function AuctionRoom() {
   const { id } = useParams();
   const { user } = useContext(UserContext)!;
@@ -28,15 +34,7 @@ function AuctionRoom() {
   const [currentPrice, setCurrentPrice] = useState(0);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  const { placeBid } = useAuction(product?.id, (incomingBid) => {
-    if (incomingBid.amount > currentPrice) {
-      setCurrentPrice(incomingBid.amount);
-      setSuccess(`New bid received: $${incomingBid.amount}`);
-      setTimeout(() => setSuccess(''), 3000);
-    }
-  });
-  const remainingTime = useCountdown(product?.duracion || 0, product?.fechaInicio || '');
+  const [bids, setBids] = useState<BidEntry[]>([]);
 
   const fetchProduct = useCallback(async (id: string) => {
     try {
@@ -48,18 +46,52 @@ function AuctionRoom() {
       setError('Failed to load auction');
     }
   }, []);
+  const handleBidReceived = useCallback((incomingBid: Bid) => {
+    setBids(prevBids => {
+      if (incomingBid.amount > (prevBids[0]?.amount || 0)) {
+        setCurrentPrice(incomingBid.amount);
+        setSuccess(`New bid received: $${incomingBid.amount}`);
+        setTimeout(() => setSuccess(''), 3000);
+        
+        return [
+          { 
+            user: incomingBid.userId || 'Anonymous', 
+            amount: incomingBid.amount, 
+            timestamp: new Date().toLocaleTimeString() 
+          },
+          ...prevBids
+        ];
+      }
+      return prevBids;
+    });
+  }, []);
+  
+  const { placeBid } = useAuction(product?.id, handleBidReceived);
+
+  // Fetch all existing bids once on load
+  const fetchBids = useCallback(async () => {
+    try {
+      const response = await productService.getBids(id!);
+      const formatted = response.map((bid: any) => ({
+        user: bid.userId || bid.user || 'Unknown',
+        amount: bid.amount,
+        timestamp: new Date(bid.timestamp || Date.now()).toLocaleTimeString(),
+      }));
+      setBids(formatted.reverse());
+    } catch (err) {
+      console.error('Error fetching bids:', err);
+    }
+  }, [id]);
+
+
+  const remainingTime = useCountdown(product?.duracion || 0, product?.fechaInicio || '');
 
   useEffect(() => {
-    if (id) fetchProduct(id);
-  }, [id, fetchProduct]);
-
-  // useEffect(() => {
-  //   if (product) {
-  //     // re-suscribe to new SSE if product changes
-  //     const cleanup = useAuction(product.id, handleIncomingBid);
-  //     return cleanup;
-  //   }
-  // }, [product]);
+    if (id) {
+      fetchProduct(id);
+      fetchBids();
+    }
+  }, [id, fetchProduct, fetchBids]);
 
   const auctionEnded = remainingTime <= 0;
   const auctionActive = !auctionEnded && product && new Date(product.fechaInicio) <= new Date();
@@ -77,6 +109,10 @@ function AuctionRoom() {
         setSuccess('Bid placed successfully!');
         setError('');
         resetForm();
+        setBids((prev) => [
+          { user: user.username, amount: bidValue, timestamp: new Date().toLocaleTimeString() },
+          ...prev,
+        ]);
         setTimeout(() => setSuccess(''), 3000);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to place bid');
@@ -89,7 +125,6 @@ function AuctionRoom() {
     <Box sx={{ p: 4 }}>
       {product ? (
         <Grid container spacing={4}>
-          {/* Left Side - Product Image */}
           <Grid size={{xs:12,md:6}}>
             <Card>
               <CardMedia
@@ -100,9 +135,28 @@ function AuctionRoom() {
                 sx={{ objectFit: 'contain' }}
               />
             </Card>
+            <TableContainer component={Paper} sx={{ mt: 4 }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>User</TableCell>
+                    <TableCell align="right">Bid Amount</TableCell>
+                    <TableCell align="right">Time</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {bids.map((bid, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{bid.user}</TableCell>
+                      <TableCell align="right">${bid.amount}</TableCell>
+                      <TableCell align="right">{bid.timestamp}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Grid>
 
-          {/* Right Side - Product Info and Bidding */}
           <Grid size={{xs:12,md:6}}>
             <Card sx={{ height: '100%' }}>
               <CardContent>
@@ -113,7 +167,6 @@ function AuctionRoom() {
                   {product.descripcion}
                 </Typography>
 
-                {/* Auction Status */}
                 <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
                   <Typography variant="h6" gutterBottom>
                     Auction Status
@@ -143,12 +196,8 @@ function AuctionRoom() {
                   )}
                 </Paper>
 
-                {/* Bidding Form */}
                 {auctionActive && user && (
                   <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
-                    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-                    {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-
                     <TextField
                       fullWidth
                       id="bidAmount"
@@ -173,6 +222,8 @@ function AuctionRoom() {
                     >
                       Place Bid
                     </Button>
+                    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+                    {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
                   </Box>
                 )}
 

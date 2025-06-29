@@ -1,3 +1,4 @@
+import bidInstance from "../api/bidInstance";
 import jsonServerProductInstance from "../api/productsInstance";
 import type { Bid } from "../interfaces/bidInterface";
 import type { Product } from "../interfaces/productInterface";
@@ -56,6 +57,7 @@ export const productService = {
 
   createBid: async (bid: Bid) => {
     const response = await jsonServerProductInstance.post('/bids', bid);
+    await bidInstance.post('/bids', bid);
     return response.data;
   },
 

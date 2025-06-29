@@ -32,7 +32,7 @@
       "titulo": "Nintendo Switch OLED",
       "descripcion": "Consola híbrida con pantalla OLED de 7 pulgadas.",
       "imagen": "https://www.tiendaamiga.com.bo/media/catalog/product/cache/deb88dadd509903c96aaa309d3e790dc/e/0/e06716.jpg",
-      "precioBase": 307,
+      "precioBase": 354,
       "duracion": 108000,
       "fechaInicio": "2025-06-28T10:00:00.000Z"
     },
@@ -83,6 +83,307 @@
       "userId": "3",
       "amount": 307,
       "date": "2025-06-29T06:50:39.212Z"
+    },
+    {
+      "id": "01b5e076-5c48-4ec9-8e08-5196c2caf7d1",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 308,
+      "date": "2025-06-29T06:58:52.428Z"
+    },
+    {
+      "id": "abb0021b-cd85-4a5a-a2ae-80bc3d1f239b",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 310,
+      "date": "2025-06-29T07:05:14.442Z"
+    },
+    {
+      "id": "c0642982-a627-435d-a634-71d1b163ec00",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 315,
+      "date": "2025-06-29T07:06:04.704Z"
+    },
+    {
+      "id": "88f75d48-a59c-408f-b7a1-0387af7aca35",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 316,
+      "date": "2025-06-29T07:13:15.946Z"
+    },
+    {
+      "id": "2090a23f-9afe-41a9-a2cb-23e673aa8448",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 317,
+      "date": "2025-06-29T07:36:14.030Z"
+    },
+    {
+      "id": "55f02257-1e2c-4c2f-b953-721b721c71e9",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 318,
+      "date": "2025-06-29T07:40:31.547Z"
+    },
+    {
+      "id": "563abc9f-8c2c-4298-a632-7bf6228d75a1",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 319,
+      "date": "2025-06-29T07:41:02.255Z"
+    },
+    {
+      "id": "42f270c7-6223-41d2-a592-999da9d10390",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 320,
+      "date": "2025-06-29T07:49:51.499Z"
+    },
+    {
+      "id": "a63571cb-bb1f-4a23-a7e3-54c769908a9e",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 321,
+      "date": "2025-06-29T07:50:08.557Z"
+    },
+    {
+      "id": "0000ae69-e3a9-4e99-8567-a3feaec8f484",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 322,
+      "date": "2025-06-29T07:50:45.758Z"
+    },
+    {
+      "id": "403579a2-71a3-4b44-84b7-07e65d63b191",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 323,
+      "date": "2025-06-29T07:59:34.910Z"
+    },
+    {
+      "id": "62b46006-b4a2-4176-aa07-06f9ae522c3f",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 324,
+      "date": "2025-06-29T08:08:31.417Z"
+    },
+    {
+      "id": "926f122f-5e36-46b4-a95d-e3cb34b01d57",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 325,
+      "date": "2025-06-29T08:19:55.322Z"
+    },
+    {
+      "id": "d70d866b-4b10-4c9f-99e9-7772c0c3c198",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 326,
+      "date": "2025-06-29T08:20:38.964Z"
+    },
+    {
+      "id": "0035b495-15ec-4334-af11-ab388929c3eb",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 327,
+      "date": "2025-06-29T08:21:10.675Z"
+    },
+    {
+      "id": "ac6dfbb9-69dc-418b-90ec-02d5e5edc11d",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 328,
+      "date": "2025-06-29T08:22:13.141Z"
+    },
+    {
+      "id": "32cae7d2-aabf-4de1-921e-944f0848a883",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 329,
+      "date": "2025-06-29T08:24:25.745Z"
+    },
+    {
+      "id": "120e4f58-b450-4835-a237-ef3385c4446b",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 330,
+      "date": "2025-06-29T08:26:03.930Z"
+    },
+    {
+      "id": "f97f75c4-c4b7-4616-9b68-1c2929b342cb",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 331,
+      "date": "2025-06-29T08:26:44.658Z"
+    },
+    {
+      "id": "11246689-eb65-4e42-9e81-e15d12da8588",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 332,
+      "date": "2025-06-29T08:28:58.387Z"
+    },
+    {
+      "id": "066580b5-a590-483d-94a2-bea47b08d0e4",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 333,
+      "date": "2025-06-29T08:33:19.675Z"
+    },
+    {
+      "id": "633e629e-9a81-4327-93cb-6634c0075832",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 334,
+      "date": "2025-06-29T08:37:34.858Z"
+    },
+    {
+      "id": "1862ef73-c95e-4c69-b5ec-3b3c03a89bdd",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 335,
+      "date": "2025-06-29T08:41:08.163Z"
+    },
+    {
+      "id": "fdd02fda-9a2b-4011-9acb-04a8d5908efd",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 336,
+      "date": "2025-06-29T08:43:26.291Z"
+    },
+    {
+      "id": "153b0dd1-d5ae-4ee0-b591-84105a272842",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 337,
+      "date": "2025-06-29T08:49:44.676Z"
+    },
+    {
+      "id": "268426d7-f2cd-43cd-963b-88f2398cc93b",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 338,
+      "date": "2025-06-29T08:54:17.702Z"
+    },
+    {
+      "id": "6f90574c-cf07-4ff9-a7b8-1216c6ed6b0a",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 339,
+      "date": "2025-06-29T09:06:30.929Z"
+    },
+    {
+      "id": "9686bf04-deed-48d1-8b77-8161ce72f20d",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 340,
+      "date": "2025-06-29T09:06:47.104Z"
+    },
+    {
+      "id": "8c16f3f0-f902-478c-928f-54955cf72ce1",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 341,
+      "date": "2025-06-29T09:09:12.001Z"
+    },
+    {
+      "id": "7b723a13-03d6-449d-ab65-da8f5027e9c8",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 342,
+      "date": "2025-06-29T09:10:47.204Z"
+    },
+    {
+      "id": "97e3182e-2590-4e27-aa36-7d140680cf63",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 343,
+      "date": "2025-06-29T09:15:29.022Z"
+    },
+    {
+      "id": "041a66e0-b863-4bf4-b16d-2f7812fc242f",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 344,
+      "date": "2025-06-29T09:15:48.397Z"
+    },
+    {
+      "id": "c7b0b1bb-9f36-4e08-85fa-f6671512a96f",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 345,
+      "date": "2025-06-29T09:16:04.495Z"
+    },
+    {
+      "id": "664f4c37-8fe2-4666-8bcc-e4fe98a578e7",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 346,
+      "date": "2025-06-29T09:16:44.111Z"
+    },
+    {
+      "id": "70685725-3817-4831-b143-de86542f82ec",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 347,
+      "date": "2025-06-29T09:18:16.124Z"
+    },
+    {
+      "id": "55c9c4da-c13f-4425-a9b0-6811b9000d3b",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 348,
+      "date": "2025-06-29T09:23:23.831Z"
+    },
+    {
+      "id": "a6971263-b1d7-4a69-b775-00526cbf4be3",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 349,
+      "date": "2025-06-29T09:28:27.505Z"
+    },
+    {
+      "id": "db604180-a302-4f65-a9cf-a95046a4f776",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 349,
+      "date": "2025-06-29T09:30:16.823Z"
+    },
+    {
+      "id": "e0909ba0-6c33-4c46-b102-3259eaf424c8",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 350,
+      "date": "2025-06-29T09:32:42.668Z"
+    },
+    {
+      "id": "e8c377c8-d08d-4c9e-b775-d7eff7e18707",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 351,
+      "date": "2025-06-29T09:39:06.298Z"
+    },
+    {
+      "id": "fea48e54-d02e-449a-9313-ec19230d4c4a",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 352,
+      "date": "2025-06-29T09:39:41.352Z"
+    },
+    {
+      "id": "a0f58be3-8443-4cfe-9265-0c1953a25d3a",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 353,
+      "date": "2025-06-29T09:40:17.615Z"
+    },
+    {
+      "id": "a378c1ac-6192-4a73-a66b-613eba753bc7",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 354,
+      "date": "2025-06-29T09:40:39.546Z"
     }
   ]
 }
