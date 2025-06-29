@@ -12,6 +12,7 @@ import { useCountdown } from "../hooks/useAuction";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import type { Bid } from "../interfaces/bidInterface";
+import { userService } from "../services/userService";
 
 interface BidEntry {
   user: string;
@@ -35,6 +36,7 @@ function AuctionRoom() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [bids, setBids] = useState<BidEntry[]>([]);
+  const [winningBid, setWinningBid] = useState<BidEntry | null>(null);
 
   const fetchProduct = useCallback(async (id: string) => {
     try {
@@ -46,40 +48,67 @@ function AuctionRoom() {
       setError('Failed to load auction');
     }
   }, []);
-  const handleBidReceived = useCallback((incomingBid: Bid) => {
-    setBids(prevBids => {
-      if (incomingBid.amount > (prevBids[0]?.amount || 0)) {
-        setCurrentPrice(incomingBid.amount);
-        setSuccess(`New bid received: $${incomingBid.amount}`);
-        setTimeout(() => setSuccess(''), 3000);
-        
-        return [
-          { 
-            user: incomingBid.userId || 'Anonymous', 
-            amount: incomingBid.amount, 
-            timestamp: new Date().toLocaleTimeString() 
-          },
-          ...prevBids
-        ];
-      }
-      return prevBids;
-    });
-  }, []);
+  const handleBidReceived = useCallback(
+    async (incomingBid: Bid) => {
+      // Solo actualizamos si viene una puja más alta
+      setBids(prev => {
+        if (incomingBid.amount <= (prev[0]?.amount || 0)) return prev;
+        return prev; // placeholder, actualizamos abajo
+      });
+  
+      // Traemos el username
+      let username = "Anonymous";
+      try {
+        const usr = await userService.getUserById(incomingBid.userId);
+        username = usr.username;
+      } catch {}
+  
+      const newEntry: BidEntry = {
+        user: username,
+        amount: incomingBid.amount,
+        timestamp: new Date(incomingBid.date).toLocaleTimeString(),
+      };
+  
+      // Ahora sí agregamos al estado
+      setCurrentPrice(incomingBid.amount);
+      setSuccess(`New bid received: $${incomingBid.amount}`);
+      setTimeout(() => setSuccess(""), 3000);
+      setBids(prev => [newEntry, ...prev]);
+    },
+    []
+  );
   
   const { placeBid } = useAuction(product?.id, handleBidReceived);
 
   // Fetch all existing bids once on load
   const fetchBids = useCallback(async () => {
     try {
-      const response = await productService.getBids(id!);
-      const formatted = response.map((bid: any) => ({
-        user: bid.userId || bid.user || 'Unknown',
-        amount: bid.amount,
-        timestamp: new Date(bid.timestamp || Date.now()).toLocaleTimeString(),
-      }));
-      setBids(formatted.reverse());
+      const rawBids = await productService.getBids(id!);
+      // Para cada bid pedimos al backend el user completo
+      const enriched = await Promise.all(
+        rawBids.map(async (bid: Bid) => {
+          let username = "Unknown";
+          try {
+            const usr = await userService.getUserById(bid.userId);
+            username = usr.username;
+          } catch (error){ 
+            console.error('error al recuperar pujas:',error)
+            setError('error al recuperar pujas:')
+            // if (error instanceof Error){
+            //   setError('error al recuperar pujas:',error.message.toString())
+            // }
+            
+          }
+          return {
+            user: username,
+            amount: bid.amount,
+            timestamp:bid.date,
+          };
+        })
+      );
+      setBids(enriched.reverse());//la mas reciente va arriba
     } catch (err) {
-      console.error('Error fetching bids:', err);
+      console.error("Error fetching bids:", err);
     }
   }, [id]);
 
@@ -109,10 +138,6 @@ function AuctionRoom() {
         setSuccess('Bid placed successfully!');
         setError('');
         resetForm();
-        setBids((prev) => [
-          { user: user.username, amount: bidValue, timestamp: new Date().toLocaleTimeString() },
-          ...prev,
-        ]);
         setTimeout(() => setSuccess(''), 3000);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to place bid');
@@ -120,11 +145,19 @@ function AuctionRoom() {
       }
     }
   });
+  useEffect(() => {
+    if (auctionEnded && bids.length) {
+      // bids sorted with newest first, so highest is first
+      const top = bids[0];
+      setWinningBid(top);
+    }
+  }, [auctionEnded, bids]);
 
   return (
     <Box sx={{ p: 4 }}>
       {product ? (
         <Grid container spacing={4}>
+          {/* Left side: image & bids table */}
           <Grid size={{xs:12,md:6}}>
             <Card>
               <CardMedia
@@ -145,8 +178,8 @@ function AuctionRoom() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {bids.map((bid, index) => (
-                    <TableRow key={index}>
+                  {bids.map((bid, idx) => (
+                    <TableRow key={idx}>
                       <TableCell>{bid.user}</TableCell>
                       <TableCell align="right">${bid.amount}</TableCell>
                       <TableCell align="right">{bid.timestamp}</TableCell>
@@ -157,13 +190,14 @@ function AuctionRoom() {
             </TableContainer>
           </Grid>
 
+          {/* Right side: details & bidding form */}
           <Grid size={{xs:12,md:6}}>
             <Card sx={{ height: '100%' }}>
               <CardContent>
                 <Typography variant="h4" gutterBottom>
                   {product.titulo}
                 </Typography>
-                <Typography variant="body1" >
+                <Typography variant="body1" gutterBottom>
                   {product.descripcion}
                 </Typography>
 
@@ -171,7 +205,21 @@ function AuctionRoom() {
                   <Typography variant="h6" gutterBottom>
                     Auction Status
                   </Typography>
-                  {auctionActive ? (
+                  {auctionEnded?(<Typography color="error" variant="h5">
+                      Finished
+                    </Typography>):(<></>)}
+
+                  {auctionEnded ? (
+                    winningBid ? (
+                      <Card variant="outlined" sx={{ p: 2, background: '#f0f0f0' }}>
+                        <Typography variant="h6">
+                          Sold for <strong>${winningBid.amount}</strong> to <strong>{winningBid.user}</strong>
+                        </Typography>
+                      </Card>
+                    ) : (
+                      <Typography>No bids were placed.</Typography>
+                    )
+                  ) : (
                     <>
                       <Typography variant="body1">
                         Current Price: <strong>${currentPrice}</strong>
@@ -180,23 +228,11 @@ function AuctionRoom() {
                         <Timer remainingSeconds={Math.ceil(remainingTime / 1000)} />
                       </Box>
                     </>
-                  ) : auctionEnded ? (
-                    <Typography color="error" variant="body1">
-                      Auction has ended
-                    </Typography>
-                  ) : (
-                    <>
-                      <Typography variant="body1">
-                        Initial Price: <strong>${currentPrice}</strong>
-                      </Typography>
-                      <Typography variant="body1">
-                        Auction starts at: {new Date(product.fechaInicio).toLocaleString()}
-                      </Typography>
-                    </>
                   )}
                 </Paper>
 
-                {auctionActive && user && (
+                {/* Bidding form */}
+                {!auctionEnded && user ? (
                   <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                     <TextField
                       fullWidth
@@ -222,15 +258,13 @@ function AuctionRoom() {
                     >
                       Place Bid
                     </Button>
-                    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-                    {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+                    {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+                    {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
                   </Box>
-                )}
+                ) : null}
 
-                {!user && (
-                  <Alert severity="info">
-                    Please log in to place a bid
-                  </Alert>
+                {!user && !auctionEnded && (
+                  <Alert severity="info">Please log in to place a bid</Alert>
                 )}
               </CardContent>
             </Card>

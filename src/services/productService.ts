@@ -64,5 +64,9 @@ export const productService = {
   getBids: async (productId: string) => {
     const response = await jsonServerProductInstance.get(`/bids?productId=${productId}&_sort=timestamp&_order=desc`);
     return response.data;
+  },
+  getBidsByUser: async (userId: string) => {
+    const response = await jsonServerProductInstance.get(`/bids?userId=${userId}&_sort=timestamp&_order=desc`);
+    return response.data;
   }
 }

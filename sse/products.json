@@ -14,7 +14,7 @@
       "titulo": "PlayStation 5",
       "descripcion": "Consola de videojuegos de nueva generación con 1 TB de almacenamiento.",
       "imagen": "https://gmedia.playstation.com/is/image/SIEPDC/ps5-pro-dualsense-image-block-01-en-16aug24",
-      "precioBase": 500,
+      "precioBase": 505,
       "duracion": 90000,
       "fechaInicio": "2025-06-29T00:00:00.000Z"
     },
@@ -32,7 +32,7 @@
       "titulo": "Nintendo Switch OLED",
       "descripcion": "Consola híbrida con pantalla OLED de 7 pulgadas.",
       "imagen": "https://www.tiendaamiga.com.bo/media/catalog/product/cache/deb88dadd509903c96aaa309d3e790dc/e/0/e06716.jpg",
-      "precioBase": 354,
+      "precioBase": 360,
       "duracion": 144000,
       "fechaInicio": "2025-06-28T10:00:00.000Z"
     },
@@ -384,6 +384,90 @@
       "userId": "3",
       "amount": 354,
       "date": "2025-06-29T09:40:39.546Z"
+    },
+    {
+      "id": "cb51090b-8f30-484c-a1cf-766676d3b763",
+      "productId": "p2",
+      "userId": "3",
+      "amount": 501,
+      "date": "2025-06-29T16:24:08.457Z"
+    },
+    {
+      "id": "3f9dd0a8-9356-4b6b-87e9-5077fbfccaff",
+      "productId": "p2",
+      "userId": "e5b4",
+      "amount": 502,
+      "date": "2025-06-29T16:24:55.303Z"
+    },
+    {
+      "id": "212622c8-9752-4bcc-a834-ba6bbf9a8339",
+      "productId": "p2",
+      "userId": "maria",
+      "amount": 503,
+      "date": "2025-06-29T16:25:58.506Z"
+    },
+    {
+      "id": "889ad320-d62d-48c5-9adb-9538bfaf26c2",
+      "productId": "p2",
+      "userId": "Peso Deidad",
+      "amount": 504,
+      "date": "2025-06-29T16:26:03.744Z"
+    },
+    {
+      "id": "a5b50d1e-167f-43f9-851d-88fa6e249ed5",
+      "productId": "p2",
+      "userId": "maria",
+      "amount": 505,
+      "date": "2025-06-29T16:26:30.091Z"
+    },
+    {
+      "id": "19c4d531-bc79-4a1a-a51b-4ff5670b7a03",
+      "productId": "p4",
+      "userId": "Peso Deidad",
+      "amount": 355,
+      "date": "2025-06-29T16:27:21.287Z"
+    },
+    {
+      "id": "ab4c9f06-44dc-484f-9bfa-135ed399955f",
+      "productId": "p4",
+      "userId": "maria",
+      "amount": 356,
+      "date": "2025-06-29T16:27:37.008Z"
+    },
+    {
+      "id": "a737bf9e-416b-4ef0-915e-fcedfcf53b44",
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 357,
+      "date": "2025-06-29T16:37:11.146Z"
+    },
+    {
+      "id": "0fb995b7-d625-40ba-bf5a-cb02aa60ef51",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 358,
+      "date": "2025-06-29T16:37:20.147Z"
+    },
+    {
+      "id": "snasdfka",
+      "productId": "p1",
+      "userId": "3",
+      "amount": 4500,
+      "date": "2025-06-28T03:00:00.000Z"
+    },
+    {
+      "id": "a5f221cf-8dc7-49d0-be11-c7d60fe8ea4b",
+      "productId": "p4",
+      "userId": "e5b4",
+      "amount": 359,
+      "date": "2025-06-29T17:51:09.257Z"
+    },
+    {
+      "id": "7b136a04-6850-4886-93fa-7ac71616b4fd",
+      "productId": "p4",
+      "userId": "a03b",
+      "amount": 360,
+      "date": "2025-06-29T18:32:30.168Z"
     }
   ]
 }

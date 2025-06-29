@@ -28,6 +28,16 @@ export const userService = {
     }
   },
 
+  async getUsernameById(id: string): Promise<User> {
+    try {
+      const response = await jsonServerInstance.get(`/users/${id}`);
+      return response.data.username;
+    } catch (error) {
+      console.error("Failed to fetch user", error);
+      throw error;
+    }
+  },
+
   /**
    * Create a new user
    */

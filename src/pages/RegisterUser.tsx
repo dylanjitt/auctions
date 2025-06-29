@@ -18,7 +18,7 @@ import { useCallback, useState } from "react";
 
 const registerSchema = yup.object({
   username: yup.string().required("El username es requerido"),
-  rol: yup.string().oneOf(["admin", "user"]).required("El rol es requerido"),
+  //rol: yup.string().oneOf(["admin", "user"]).required("El rol es requerido"),
   avatar: yup.string()
   //.url("Debe ser una URL válida")
   .nullable(),
@@ -31,13 +31,13 @@ function RegisterPage() {
   const formik = useFormik({
     initialValues: {
       username: "",
-      rol: "",
+      
       avatar: "",
     },
     validationSchema: registerSchema,
     onSubmit: async (values) => {
       try {
-        await userService.createUser(values);
+        await userService.createUser({...values,rol:'user'});
         alert("Usuario registrado con éxito");
         navigate("/login");
       } catch (error) {
@@ -124,7 +124,7 @@ function RegisterPage() {
             />
 
             {/* Role */}
-            <Select
+            {/* <Select
               fullWidth
               displayEmpty
               variant="filled"
@@ -145,7 +145,7 @@ function RegisterPage() {
               <Typography variant="caption" color="error">
                 {formik.errors.rol}
               </Typography>
-            )}
+            )} */}
 
             {/* Avatar URL */}
             {/* <TextField

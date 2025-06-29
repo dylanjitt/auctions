@@ -22,7 +22,7 @@
       "id": "6a7e",
       "username": "shadow",
       "rol": "user",
-      "avatar": "https://ui-avatars.com/api/?name=shadow",
+      "avatar": "https://res.cloudinary.com/dampoknh7/image/upload/v1751221631/Captura_de_pantalla_2025-06-29_a_la_s_2.27.00_p._m._lq0ey9.png",
       "usuario": "shadow"
     },
     {
@@ -35,21 +35,21 @@
     {
       "id": "dffb",
       "username": "peso deidad",
-      "rol": "user",
+      "rol": "admin",
       "usuario": "peso deidad",
       "avatar": "https://ui-avatars.com/api/?name=peso deidad"
-    },
-    {
-      "id": "393b",
-      "username": "PesoPluma",
-      "rol": "user",
-      "avatar": "https://ui-avatars.com/api/?name=PesoPluma"
     },
     {
       "id": "e5b4",
       "username": "Peso Deidad",
       "rol": "user",
       "avatar": "https://res.cloudinary.com/dampoknh7/image/upload/v1751213256/images_ouhz9a.jpg"
+    },
+    {
+      "id": "a03b",
+      "username": "Kendrick Lamar",
+      "avatar": "https://ui-avatars.com/api/?name=Kendrick Lamar",
+      "rol": "admin"
     }
   ]
 }

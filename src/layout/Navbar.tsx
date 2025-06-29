@@ -40,7 +40,7 @@ const NavBar: React.FC = () => {
                 onClick={handleUserHistory}
                 sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
               >
-                Mis Compras
+                Mis Subastas
               </Button>
             )}
             
