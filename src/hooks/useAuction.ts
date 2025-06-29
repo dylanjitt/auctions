@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { productService } from '../services/productService';
+import { getEventStream } from '../services/sseService';
+import type { Bid } from '../interfaces/bidInterface';
 
 export const useCountdown = (duration: number, startTime: string) => {
   const [remaining, setRemaining] = useState(0);
-  const rafRef = useRef<number | null>(null);
 
   // Alternative implementation
 useEffect(() => {
@@ -24,6 +26,49 @@ useEffect(() => {
   return remaining;
 };
 
-export const useAuction = () => {
-  return { useCountdown };
-};
+export const useAuction = (productId?: string, onBidReceived?: (bid: Bid) => void) => {
+  const [auctionStatus, setAuctionStatus] = useState<string>('active');
+
+  useEffect(() => {
+    if (!productId) return;
+
+    const eventSource = getEventStream(productId);
+
+    eventSource.onmessage = (event) => {
+      const bid: Bid = JSON.parse(event.data);
+      onBidReceived?.(bid);
+    };
+
+    eventSource.onerror = (error) => {
+      console.error('SSE connection error:', error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [productId, onBidReceived]);
+  
+  const placeBid = async (productId: string, userId: string, amount: number) => {
+    const bid: Bid = {
+      id: crypto.randomUUID(),
+      productId,
+      userId,
+      amount,
+      date: new Date().toISOString()
+    };
+
+    await productService.createBid(bid);
+    await productService.updateProduct(productId, { precioBase: amount }); // ensure correct product update
+  };
+
+  return { placeBid, auctionStatus,useCountdown };
+
+  };
+
+  
+
+
+// export const useAuction = () => {
+//   return { useCountdown };
+// };

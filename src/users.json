@@ -31,6 +31,13 @@
       "rol": "admin",
       "avatar": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR-USyI8VIxs8XSqJ5JOPwSEobozghRsN5yMgvLg7Ev9qfttsnjsPgyEpa7je9OHdgf3C-arTy8eFAVJpqTrNTt2A",
       "usuario": "keanu"
+    },
+    {
+      "id": "dffb",
+      "username": "peso deidad",
+      "rol": "user",
+      "usuario": "peso deidad",
+      "avatar": "https://ui-avatars.com/api/?name=peso deidad"
     }
   ]
 }

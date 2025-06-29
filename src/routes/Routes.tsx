@@ -24,7 +24,7 @@ export const AppRoutes = () => {
         }>
           {/* Role: USER */}
           <Route element={<RoleGuard allowedRoles={['user']} />}>
-            <Route path="/home">
+            <Route path="/home" >
               <Route index element={<Home />} />
               <Route path="auction/:id" element={<AuctionRoom />} />
               <Route path="*" element={<Navigate to="/home" replace />} />

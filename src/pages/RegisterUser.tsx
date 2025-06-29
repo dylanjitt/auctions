@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/createUser";
+import { uploadToCloudinary } from "../util/uploader";
 
 const registerSchema = yup.object({
   username: yup.string().required("El username es requerido"),
@@ -41,6 +42,16 @@ function RegisterPage() {
     }
   });
 
+  const handleFileUpload = async (file: File) => {
+    try {
+      const imageUrl = await uploadToCloudinary(file);
+      formik.setFieldValue("avatar", imageUrl);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error al subir la imagen");
+    }
+  };
+
   return (
     <Container maxWidth="xs">
       <Box sx={{ marginY: 8 }}>
@@ -54,9 +65,9 @@ function RegisterPage() {
             borderRadius: 5,
           }}
         >
-          
-           <h1>Crear Cuenta</h1>
-          
+
+          <h1>Crear Cuenta</h1>
+
 
           <form onSubmit={formik.handleSubmit}>
             {/* Username */}
@@ -100,7 +111,7 @@ function RegisterPage() {
             )}
 
             {/* Avatar URL */}
-            <TextField
+            {/* <TextField
               fullWidth
               label="Avatar URL (opcional)"
               variant="filled"
@@ -111,7 +122,64 @@ function RegisterPage() {
               helperText={formik.touched.avatar && formik.errors.avatar}
               error={formik.touched.avatar && Boolean(formik.errors.avatar)}
               sx={{ marginBottom: 3 }}
-            />
+            /> */}
+            <Box
+              onDrop={(e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files?.[0];
+                if (file && file.type.startsWith("image/")) {
+                  handleFileUpload(file);
+                }
+              }}
+              onDragOver={(e) => e.preventDefault()}
+              sx={{
+                border: "2px dashed #1E8BC3",
+                borderRadius: 2,
+                padding: 2,
+                textAlign: "center",
+                marginBottom: 3,
+                cursor: "pointer",
+                backgroundColor: "#f8f8f8",
+              }}
+            >
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Arrastra y suelta tu imagen aquí
+              </Typography>
+
+              {formik.values.avatar ? (
+                <img
+                  src={formik.values.avatar}
+                  alt="Avatar"
+                  style={{ width: 100, height: 100, borderRadius: "50%" }}
+                />
+              ) : (
+                <Typography variant="caption" color="text.secondary">
+                  O haz clic para seleccionar
+                </Typography>
+              )}
+
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="avatar-upload"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) {
+                    handleFileUpload(e.target.files[0]);
+                  }
+                }}
+              />
+              <label htmlFor="avatar-upload">
+                <Button
+                  component="span"
+                  variant="outlined"
+                  sx={{ mt: 1 }}
+                >
+                  Seleccionar imagen
+                </Button>
+              </label>
+            </Box>
+
 
             <Button
               type="submit"

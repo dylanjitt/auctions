@@ -22,9 +22,16 @@ const schema = yup.object().shape({
     .positive('Debe ser un número positivo')
     .integer('Debe ser un número entero')
     .required('Duración es requerida'),
-  fechaInicio: yup.date()
-  .required('Fecha de inicio es requerida')
-  .min(new Date(), 'La fecha no puede ser en el pasado'),
+    fechaInicio: yup.date()
+    .required('Fecha de inicio es requerida')
+    .test(
+      'is-future-or-existing',
+      'La fecha no puede ser en el pasado para nuevos productos',
+      function(value) {
+        // @ts-ignore
+        return this.parent.id || value >= new Date() // Only validate for new products
+      }
+    )
 });
 
 // Helper function to create clean initial values
@@ -54,12 +61,11 @@ const getInitialValues = (product: Product | null): Product => {
 const BidForm: FC<Props> = ({ open, product, onClose, onSave }) => {
   const initialValues = useMemo(() => getInitialValues(product), [product]);
 
-
-
   const formik = useFormik<Product>({
     initialValues,
     validationSchema: schema,
-    enableReinitialize: false,
+    enableReinitialize: true,
+    validateOnMount:true,
     onSubmit: async (values) => {
       try {
         const dateWithZeroSeconds = new Date(values.fechaInicio);

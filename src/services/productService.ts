@@ -1,4 +1,5 @@
 import jsonServerProductInstance from "../api/productsInstance";
+import type { Bid } from "../interfaces/bidInterface";
 import type { Product } from "../interfaces/productInterface";
 export const productService = {
   async getProducts(){
@@ -36,7 +37,7 @@ export const productService = {
     product: Partial<Product>
   ): Promise<Product> {
     try {
-      const response = await jsonServerProductInstance.patch(`/products/${id}`, product);
+      const response = await jsonServerProductInstance.patch(`/products/${encodeURIComponent(id)}`, product);
       return response.data;
     } catch (error) {
       console.error("Failed to update product", error);
@@ -53,5 +54,14 @@ export const productService = {
     }
   },
 
+  createBid: async (bid: Bid) => {
+    const response = await jsonServerProductInstance.post('/bids', bid);
+    return response.data;
+  },
+
+  getBids: async (productId: string) => {
+    const response = await jsonServerProductInstance.get(`/bids?productId=${productId}&_sort=timestamp&_order=desc`);
+    return response.data;
+  }
 
 }

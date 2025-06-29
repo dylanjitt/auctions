@@ -1,11 +1,12 @@
-import { VisibilityOff } from "@mui/icons-material";
-import { Box, Button, CardContent, CardMedia, Container, FilledInput, FormControl, IconButton, InputAdornment, InputLabel, TextField } from "@mui/material";
+
+import { Box, Button, CardContent,  Container, TextField } from "@mui/material";
 import { UserContext } from '../context/UserContext';
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { login } from "../services/authService";
+import Toast from "../components/Toast";
 
 const loginSchema = yup.object({
   username: yup
@@ -19,7 +20,6 @@ function LoginPage () {
   const [loginError, setLoginError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage,seterrorMessage]=useState("");
 
   const userContext = useContext(UserContext)
@@ -39,6 +39,7 @@ function LoginPage () {
         if (!responseLogin) {
           console.log("Login failed - no response"); // Debug log
           setLoginError(true);
+          seterrorMessage('user not found, try again')
           formik.resetForm();
           return;
         }
@@ -66,14 +67,19 @@ function LoginPage () {
       }
     },
   });
+
+  const handleToastClose = () => {
+    setLoginError(false);
+  };
+
   return (
     <Container maxWidth="xs">
-      {/* <Toast
+      <Toast
         open={loginError}
         message={errorMessage}
         severity="error"
         onClose={handleToastClose}
-      /> */}
+      />
       <Box sx={{ marginY: 8 }}>
         <CardContent
           sx={{

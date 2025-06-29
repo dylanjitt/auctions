@@ -1,9 +1,10 @@
 import { useEffect, useState, type FC } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import type { Product } from '../interfaces/productInterface';
 import { productService } from '../services/productService';
 import { AuctionItem } from '../components/AuctionItem';
+import Grid from '@mui/material/Grid'
 import BidForm from '../components/BidForm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -83,6 +84,9 @@ const AdminPanel: FC = () => {
   };
 
   return (
+    <div style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}}>
+      <h1>Panel de Administrador</h1>
+  
     <div>
       <IconButton 
         onClick={() => handleOpen()} 
@@ -94,7 +98,7 @@ const AdminPanel: FC = () => {
       
       <Grid container spacing={2}>
         {products.map(p => (
-          <Grid key={p.id} xs={12} sm={6} md={4}>
+          <Grid key={p.id} size={{xs:12, sm:6, md:4}} >
             <div 
               //onClick={() => handleOpen(p)}
               //style={{ cursor: 'pointer' }}
@@ -133,6 +137,7 @@ const AdminPanel: FC = () => {
         onClose={handleClose}
         onSave={handleSave}
       />
+    </div>
     </div>
   );
 };

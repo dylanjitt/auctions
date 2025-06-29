@@ -1,11 +1,7 @@
 import React, { createContext, useState, useContext, type ReactNode, useEffect } from 'react';
+import type { User } from '../interfaces/userInterface';
 
-export interface User {
-  id: number;
-  username: string;
-  rol: string;
-  avatar: string;
-}
+
 
 interface UserContextType {
   user: User | null;
