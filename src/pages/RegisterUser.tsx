@@ -4,8 +4,6 @@ import {
   CardContent,
   CircularProgress,
   Container,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -47,15 +45,6 @@ function RegisterPage() {
     }
   });
 
-  // const handleFileUpload = async (file: File) => {
-  //   try {
-  //     const imageUrl = await uploadToCloudinary(file);
-  //     formik.setFieldValue("avatar", imageUrl);
-  //   } catch (error) {
-  //     console.error("Error uploading image:", error);
-  //     alert("Error al subir la imagen");
-  //   }
-  // };
   const handleFileUpload = async (file: File) => {
     if (!file) return;
     try {

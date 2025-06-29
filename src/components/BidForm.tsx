@@ -1,9 +1,13 @@
-import {useEffect, useMemo, type FC} from 'react';
+import {useCallback, useEffect, useMemo, useState, type FC} from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField,Box,
+  CircularProgress,
+  Typography } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import type { Product } from '../interfaces/productInterface';
+import { uploadToCloudinary } from "../util/uploader";
+
 interface Props {
   open: boolean;
   product: Product | null;
@@ -59,6 +63,9 @@ const getInitialValues = (product: Product | null): Product => {
 const BidForm: FC<Props> = ({ open, product, onClose, onSave }) => {
   const initialValues = useMemo(() => getInitialValues(product), [product]);
 
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [uploadingImg, setUploadingImg] = useState(false);
+
   const formik = useFormik<Product>({
     initialValues,
     validationSchema: schema,
@@ -87,6 +94,24 @@ const BidForm: FC<Props> = ({ open, product, onClose, onSave }) => {
       formik.resetForm({ values: getInitialValues(product) });
     }
   }, [open, product]);
+
+  const handleImgUpload = async (file: File) => {
+    setUploadingImg(true);
+    const reader = new FileReader();
+    reader.onload = e => setPreviewImg(e.target?.result as string);
+    reader.readAsDataURL(file);
+    const url = await uploadToCloudinary(file);
+    formik.setFieldValue('imagen', url);
+    setUploadingImg(false);
+  };
+
+  const onDropImg = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file?.type.startsWith('image/')) handleImgUpload(file);
+  }, []);
+  const onDragOverImg = useCallback((e: React.DragEvent<HTMLDivElement>) => e.preventDefault(), []);
+
 
   return (
     <Dialog key={product ? product.id : 'new-product'} open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -121,7 +146,7 @@ const BidForm: FC<Props> = ({ open, product, onClose, onSave }) => {
             helperText={formik.touched.descripcion && formik.errors.descripcion}
           />
           
-          <TextField 
+          {/* <TextField 
             fullWidth 
             margin="dense" 
             label="Imagen URL" 
@@ -131,7 +156,36 @@ const BidForm: FC<Props> = ({ open, product, onClose, onSave }) => {
             onBlur={formik.handleBlur}
             error={formik.touched.imagen && !!formik.errors.imagen} 
             helperText={formik.touched.imagen && formik.errors.imagen}
-          />
+          /> */}
+          {/* Imagen Drag & Drop */}
+          <Box
+            onDrop={onDropImg}
+            onDragOver={onDragOverImg}
+            sx={{ border: '2px dashed #1E8BC3', borderRadius: 2, p: 2, my: 2, textAlign: 'center', cursor: 'pointer', backgroundColor: '#f8f8f8', minHeight: 150, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+          >
+            {uploadingImg ? (
+              <CircularProgress />
+            ) : previewImg ? (
+              <img src={previewImg} alt="Preview" style={{ width: 200, height: 200, objectFit: 'cover' }} />
+            ) : (
+              <>
+                <Typography>Arrastra y suelta la imagen aquí</Typography>
+                <Typography variant="caption" color="text.secondary">(o haz clic)</Typography>
+              </>
+            )}
+            <input
+              id="product-image-upload"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={e => e.target.files && handleImgUpload(e.target.files[0])}
+            />
+            <label htmlFor="product-image-upload">
+              <Button component="span" variant="outlined" sx={{ mt: 1 }}>
+                {previewImg ? 'Cambiar imagen' : 'Seleccionar imagen'}
+              </Button>
+            </label>
+          </Box>
           
           <TextField 
             fullWidth 

@@ -12,10 +12,10 @@ const Timer: FC<TimerProps> = ({ remainingSeconds }) => {
 
   return (
     <Card>
-      <Typography variant="body1">
+      <Typography variant="body1" sx={{padding:1,paddingBottom:0}}>
       Tiempo restante:
     </Typography>
-      <Typography variant="h3">
+      <Typography variant="h3" sx={{padding:1}}>
       {hours}h : {minutes}m : {seconds}s
     </Typography>
     </Card>

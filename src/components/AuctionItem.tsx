@@ -25,7 +25,7 @@ export const AuctionItem: FC<AuctionItemProps> & {
   TimerSection: FC<Pick<Product, 'duracion' | 'fechaInicio'>>;
   Actions: FC;
 } = React.memo(({ product,children }:AuctionItemProps) => (
-  <Card sx={{ width: 370, height:570 }}>
+  <Card sx={{ width: 380, height:600 }}>
     <AuctionItem.Image src={product.imagen} title={product.titulo} />
     <AuctionItem.Content
       titulo={product.titulo}
@@ -95,6 +95,6 @@ AuctionItem.TimerSection = ({ duracion, fechaInicio }) => {
 // Updated Actions component to accept children
 AuctionItem.Actions = ({ children }: ActionsProps) => (
   <CardActions>
-    {children || <Button size="small">Ver</Button>}
+    {children }
   </CardActions>
 );
