@@ -1,5 +1,5 @@
 // src/components/AuctionRoom.tsx
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../services/productService";
 import type { Product } from "../interfaces/productInterface";

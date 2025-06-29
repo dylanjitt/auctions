@@ -114,14 +114,23 @@ export const useAuction = (
       const es = new EventSource(url);
       sseRef.current = es;
 
-      es.addEventListener('NEW_BID', e => {
+      es.addEventListener('NEW_BID', async e => {
+        // { payload: { id: number, ... } }
         const { payload } = JSON.parse(e.data);
-        onBidReceived(payload);
+        // convertir id a string
+        const bid: Bid = { ...payload, id: payload.id.toString() };
+        // 1) notify UI
+        onBidReceived(bid);
+        // 2) persistir nuevo precio en backend
+        try {
+          await productService.updateProduct(productId, { precioBase: bid.amount });
+        } catch (err) {
+          console.error('Failed to persist new price', err);
+        }
       });
 
       es.onerror = () => {
         es.close();
-        // try reconnect
         setTimeout(setup, 2000);
       };
     };

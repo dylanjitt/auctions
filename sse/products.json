@@ -14,7 +14,7 @@
       "titulo": "PlayStation 5",
       "descripcion": "Consola de videojuegos de nueva generación con 1 TB de almacenamiento.",
       "imagen": "https://gmedia.playstation.com/is/image/SIEPDC/ps5-pro-dualsense-image-block-01-en-16aug24",
-      "precioBase": 500,
+      "precioBase": 510,
       "duracion": 90000,
       "fechaInicio": "2025-06-29T00:00:00.000Z"
     },
@@ -32,8 +32,8 @@
       "titulo": "Nintendo Switch OLED",
       "descripcion": "Consola híbrida con pantalla OLED de 7 pulgadas.",
       "imagen": "https://www.tiendaamiga.com.bo/media/catalog/product/cache/deb88dadd509903c96aaa309d3e790dc/e/0/e06716.jpg",
-      "precioBase": 354,
-      "duracion": 108000,
+      "precioBase": 360,
+      "duracion": 162000,
       "fechaInicio": "2025-06-28T10:00:00.000Z"
     },
     {
@@ -404,13 +404,11 @@
     {
       "id": 1751214358527,
       "productId": "p2",
-      "userId": "maria",
+      "userId": "e5b4",
       "amount": 503,
       "date": "2025-06-29T16:25:58.506Z",
       "timestamp": "2025-06-29T16:25:58.527Z"
     },
-
-
     {
       "id": 1751215031174,
       "productId": "p4",
@@ -482,6 +480,28 @@
       "amount": 358,
       "date": "2025-06-29T19:46:31.714Z",
       "timestamp": "2025-06-29T19:46:31.741Z"
+    },
+    {
+      "id": 1751227370714,
+      "productId": "p4",
+      "userId": "6a7e",
+      "amount": 360,
+      "date": "2025-06-29T20:02:50.675Z",
+      "timestamp": "2025-06-29T20:02:50.714Z"
+    },
+    {
+      "id": "gOJk610",
+      "productId": "p2",
+      "userId": "3",
+      "amount": 510,
+      "date": "2025-06-29T20:14:36.810Z"
+    },
+    {
+      "id": "Uqm1q-F",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 360,
+      "date": "2025-06-29T20:16:05.477Z"
     }
   ]
 }
