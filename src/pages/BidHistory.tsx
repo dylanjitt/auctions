@@ -11,8 +11,12 @@ import {
   MenuItem,
   Stack,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function BidHistory() {
+
+  const { t } = useTranslation();
+
   const history = useBidHistory();
 
   // Estados de filtros
@@ -47,15 +51,15 @@ export default function BidHistory() {
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Historial de Mis Subastas
+        {t('bidHistorialLocal')}
       </Typography>
       {history.length === 0 ? (
-        <Typography>No has realizado pujas aún.</Typography>
+        <Typography>{t('noLocalBidsYet')}</Typography>
       ) : (
         <>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 2, width:'500px' }}>
             <FormControl size="small">
-              <InputLabel>Producto</InputLabel>
+              <InputLabel>{t('product')}</InputLabel>
               <Select
                 label="Producto"
                 value={selectedProduct}
@@ -69,7 +73,7 @@ export default function BidHistory() {
             </FormControl>
 
             <FormControl size="small">
-              <InputLabel>Estado</InputLabel>
+              <InputLabel>{t('state')}</InputLabel>
               <Select
                 label="Estado"
                 value={selectedStatus}
@@ -83,7 +87,7 @@ export default function BidHistory() {
             </FormControl>
 
             <FormControl size="small">
-              <InputLabel>Fecha</InputLabel>
+              <InputLabel>{t('date')}</InputLabel>
               <Select
                 label="Fecha"
                 value={selectedDate}

@@ -6,10 +6,9 @@ import { productService } from '../services/productService';
 import { useAuctionStore } from '../store/useAuctionStore';
 import { AuctionItem } from '../components/AuctionItem';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
 import { useCountdown, useAuction } from '../hooks/useAuction';
 import type { Bid } from '../interfaces/bidInterface';
-
+import { useTranslation } from 'react-i18next';
 interface PriceListenerProps {
   productId: string;
   onBid: (bid: Bid) => void;
@@ -24,6 +23,9 @@ function PriceListener({ productId, onBid, duration, startTime }: PriceListenerP
 }
 
 export default function Home() {
+
+  const {t}=useTranslation()
+
   const setProducts = useAuctionStore(s => s.setProducts);
   const products = useAuctionStore(s => s.products);
   const updatePrice = useAuctionStore(s => s.updatePrice);
@@ -84,9 +86,9 @@ export default function Home() {
   return (
     <Box sx={{ textAlign: 'center', width: '100%' }}>
       
-      {renderSection('Subastas Actuales', current)}
-      {renderSection('Próximas Subastas', upcoming)}
-      {renderSection('Subastas Concluidas', concluded)}
+      {renderSection(t('actualAuctions'), current)}
+      {renderSection(t('nextAuctions'), upcoming)}
+      {renderSection(t('nextAuctions'), concluded)}
     </Box>
   );
 }

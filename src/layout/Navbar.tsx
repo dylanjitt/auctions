@@ -4,12 +4,15 @@ import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typog
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import GavelIcon from '@mui/icons-material/Gavel';
+import { useTranslation } from 'react-i18next';
 
 const NavBar: React.FC = () => {
   // const { user, setUser } = useContext(UserContext)!;
   const {user,logoutUser}=useAuthStore()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+
+  const {t}=useTranslation()
 
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,7 +45,7 @@ const NavBar: React.FC = () => {
           </div>
           
         <Typography variant="h6" component="div">
-          Hola, {user?.username}
+          {t('hi')} {user?.username}
         </Typography>
         </div>
         
@@ -56,7 +59,7 @@ const NavBar: React.FC = () => {
                 onClick={handleUserHistory}
                 sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
               >
-                Mis Subastas
+                {t('myBids')}
               </Button>
             )}
             
@@ -66,7 +69,7 @@ const NavBar: React.FC = () => {
                 onClick={handleUserManagement}
                 sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
               >
-                Gestión de Usuarios
+                {t('manageUsers')}
               </Button>
             )}
 
@@ -82,7 +85,7 @@ const NavBar: React.FC = () => {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               >
-                <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
               </Menu>
             </Box>
           </Box>

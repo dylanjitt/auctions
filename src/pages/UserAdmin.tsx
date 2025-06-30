@@ -1,5 +1,4 @@
-// src/pages/UserAdmin.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Typography,
@@ -11,13 +10,14 @@ import { UserFormDialog } from '../components/UserFormDialog';
 import { UserTable } from '../components/UserTable';
 import Toast from '../components/Toast';
 import type { User } from '../interfaces/userInterface';
+import { useTranslation } from 'react-i18next';
 
 export default function UserAdmin() {
+  const { t } = useTranslation();
   const { users, loading, error, createUser, updateUser, deleteUser } = useUserAdmin();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editUserId, setEditUserId] = useState<string | undefined>(undefined);
 
-  // Toast state
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>('success');
@@ -40,16 +40,16 @@ export default function UserAdmin() {
     try {
       if (id) {
         await updateUser(id, data);
-        setToastMessage('Usuario actualizado con éxito');
+        setToastMessage(t('user.updated'));
       } else {
         await createUser(data);
-        setToastMessage('Usuario creado con éxito');
+        setToastMessage(t('user.created'));
       }
       setToastSeverity('success');
       setToastOpen(true);
       setDialogOpen(false);
     } catch {
-      setToastMessage('Error al guardar usuario');
+      setToastMessage(t('user.saveError'));
       setToastSeverity('error');
       setToastOpen(true);
     }
@@ -58,11 +58,11 @@ export default function UserAdmin() {
   const handleDelete = async (id: string) => {
     try {
       await deleteUser(id);
-      setToastMessage('Usuario eliminado con éxito');
+      setToastMessage(t('user.deleted'));
       setToastSeverity('success');
       setToastOpen(true);
     } catch {
-      setToastMessage('Error al eliminar usuario');
+      setToastMessage(t('user.deleteError'));
       setToastSeverity('error');
       setToastOpen(true);
     }
@@ -71,16 +71,16 @@ export default function UserAdmin() {
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h5" gutterBottom>
-        User Management
+        {t('user.title')}
       </Typography>
       <Button variant="contained" onClick={handleOpenNew} sx={{ mb: 2 }}>
-        New User
+        {t('user.new')}
       </Button>
 
       {loading ? (
         <CircularProgress />
       ) : error ? (
-        <Typography color="error">{error}</Typography>
+        <Typography color="error">{t('user.error')} {error}</Typography>
       ) : (
         <UserTable
           users={users}

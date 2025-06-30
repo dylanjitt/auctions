@@ -9,15 +9,18 @@ import { login } from "../services/authService";
 import Toast from "../components/Toast";
 import { useAuthStore } from "../store/authStore";
 import GavelIcon from '@mui/icons-material/Gavel';
-
-const loginSchema = yup.object({
-  username: yup
-    .string()
-    .required("El username es requerido"),
-});
+import { useTranslation } from "react-i18next";
 
 function LoginPage () {
-  
+
+  const {t} = useTranslation()
+
+  const loginSchema = yup.object({
+  username: yup
+    .string()
+    .required(t("userReq")),
+});
+
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +45,7 @@ function LoginPage () {
         if (!responseLogin) {
           console.log("Login failed - no response"); // Debug log
           setLoginError(true);
-          seterrorMessage('user not found, try again')
+          seterrorMessage(t('userNotFound'))
           formik.resetForm();
           return;
         }
@@ -96,20 +99,14 @@ function LoginPage () {
           }}
         >
           <GavelIcon sx={{marginRight:2, width:80,height:80}}/>
-          {/* <CardMedia
-            component="img"
-            height="200"
-            image="src/assets/gasolinaYaLogo.png"
-            sx={{ objectFit: 'contain' }}
-            alt="Gasolina Ya Logo"
-          /> */}
+
           <h1>Subasta Ya</h1>
           
           <form onSubmit={formik.handleSubmit}>
             <TextField
               fullWidth
               id="input-username-textfield"
-              label="Username"
+              label={t('username')}
               variant="filled"
               name="username"
               onChange={formik.handleChange}
@@ -135,7 +132,7 @@ function LoginPage () {
               }}
               variant="contained"
             >
-              {isLoading ? "Iniciando..." : "Iniciar Sesión"}
+              {isLoading ? "Iniciando..." : t("login")}
             </Button>
           </form>
           
@@ -154,7 +151,7 @@ function LoginPage () {
             }}
             variant="outlined"
           >
-            Crear Cuenta
+            {t('createAcc')}
           </Button>
         </CardContent>
       </Box>

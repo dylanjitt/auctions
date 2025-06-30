@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import type { User } from '../interfaces/userInterface';
 import { uploadToCloudinary } from '../util/uploader';
+import { useTranslation } from 'react-i18next';
 
 const schema = yup.object({
   username: yup.string().required('Username is required'),
@@ -30,6 +31,9 @@ interface Props {
   onSave: (data: Omit<User,'id'>, id?: string) => void;
 }
 export function UserFormDialog({ open, initialData, onClose, onSave }: Props) {
+
+  const { t } = useTranslation();
+
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -86,13 +90,15 @@ export function UserFormDialog({ open, initialData, onClose, onSave }: Props) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle>{initialData ? 'Edit User' : 'New User'}</DialogTitle>
+      <DialogTitle>
+  {initialData ? t('userForm.title.edit') : t('userForm.title.new')}
+</DialogTitle>
       <form onSubmit={formik.handleSubmit}>
         <DialogContent>
           <TextField
             fullWidth
             margin="dense"
-            label="Username"
+            label={t('userForm.fields.username')}
             name="username"
             value={formik.values.username}
             onChange={formik.handleChange}
@@ -109,8 +115,8 @@ export function UserFormDialog({ open, initialData, onClose, onSave }: Props) {
             onBlur={formik.handleBlur}
             error={formik.touched.rol && Boolean(formik.errors.rol)}
           >
-            <MenuItem value="user">User</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="user">{t('userForm.fields.user')}</MenuItem>
+            <MenuItem value="admin">{t('userForm.fields.admin')}</MenuItem>
           </Select>
           {formik.touched.rol && formik.errors.rol && (
             <Typography variant="caption" color="error">
@@ -154,10 +160,10 @@ export function UserFormDialog({ open, initialData, onClose, onSave }: Props) {
             ) : (
               <>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  Arrastra y suelta tu imagen aquí
+                {t('userForm.upload.dropHere')}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  O haz clic para seleccionar
+                {t('userForm.upload.clickToSelect')}
                 </Typography>
               </>
             )}
@@ -171,16 +177,14 @@ export function UserFormDialog({ open, initialData, onClose, onSave }: Props) {
             />
             <label htmlFor="avatar-upload">
               <Button component="span" variant="outlined">
-                {previewImage ? 'Cambiar imagen' : 'Seleccionar imagen'}
+              {previewImage ? t('userForm.upload.changeImage') : t('userForm.upload.selectImage')}
               </Button>
             </label>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained">
-            Save
-          </Button>
+        <Button onClick={onClose}>{t('userForm.actions.cancel')}</Button>
+        <Button type="submit">{t('userForm.actions.save')}</Button>
         </DialogActions>
       </form>
     </Dialog>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { EnrichedBid } from '../interfaces/EnrichBid';
 import {
   Table,
@@ -17,10 +18,11 @@ interface Props {
 }
 
 export function HistoryTable({ history }: Props) {
+  const { t } = useTranslation();
   // Determine highest bid per product when ended
   const winnersMap: Record<string, number> = {};
   history.forEach(entry => {
-    if (entry.status === 'Ended') {
+    if (entry.status === t('history.status.ended')) {
       const currentMax = winnersMap[entry.productTitle] || 0;
       winnersMap[entry.productTitle] = Math.max(currentMax, entry.amount);
     }
@@ -29,19 +31,19 @@ export function HistoryTable({ history }: Props) {
   return (
     <TableContainer component={Paper} sx={{ mt: 2 }}>
       <Table size="small">
-        <TableHead>
+      <TableHead>
           <TableRow>
-            <TableCell>Imagen</TableCell>
-            <TableCell>Artículo</TableCell>
-            <TableCell align="right">Monto ofertado</TableCell>
-            <TableCell align="center">Estado de subasta</TableCell>
-            <TableCell align="right">Fecha y Hora</TableCell>
+            <TableCell>{t('history.table.header.image')}</TableCell>
+            <TableCell>{t('history.table.header.product')}</TableCell>
+            <TableCell align="right">{t('history.table.header.amount')}</TableCell>
+            <TableCell align="center">{t('history.table.header.status')}</TableCell>
+            <TableCell align="right">{t('history.table.header.timestamp')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {history.map(entry => {
             const isWinner =
-              entry.status === 'Ended' &&
+              entry.status === t('history.status.ended') &&
               entry.amount === winnersMap[entry.productTitle];
 
             return (
@@ -59,7 +61,7 @@ export function HistoryTable({ history }: Props) {
                 <TableCell align="center">
                   <Box sx={{ fontWeight: isWinner ? 'bold' : 'normal', color: isWinner?'green':'black' }}>
                     {entry.status}
-                    {isWinner && ' (winner)'}
+                    {isWinner && ` (${t('history.status.winner')})`}
                   </Box>
                 </TableCell>
                 <TableCell align="right">{entry.timestamp}</TableCell>

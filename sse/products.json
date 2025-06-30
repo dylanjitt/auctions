@@ -32,7 +32,7 @@
       "titulo": "Nintendo Switch OLED",
       "descripcion": "Consola híbrida con pantalla OLED de 7 pulgadas.",
       "imagen": "https://www.tiendaamiga.com.bo/media/catalog/product/cache/deb88dadd509903c96aaa309d3e790dc/e/0/e06716.jpg",
-      "precioBase": 362,
+      "precioBase": 363,
       "duracion": 162000,
       "fechaInicio": "2025-06-28T10:00:00.000Z"
     },
@@ -51,7 +51,7 @@
       "descripcion": "Dispositivo de Gama Alta iPhone 16 Pro Max chip A18 Pro",
       "imagen": "https://www.tiendaamiga.com.bo/media/catalog/product/cache/deb88dadd509903c96aaa309d3e790dc/c/e/celular_apple_iphone_16_pro_256gb_titanio_negro_2__2.png",
       "precioBase": 8000,
-      "duracion": 104400,
+      "duracion": 140400,
       "fechaInicio": "2025-06-29T00:20:00.203Z"
     }
   ],
@@ -509,6 +509,13 @@
       "userId": "3",
       "amount": 362,
       "date": "2025-06-29T22:03:22.608Z"
+    },
+    {
+      "id": "9zj0mLn",
+      "productId": "p4",
+      "userId": "3",
+      "amount": 363,
+      "date": "2025-06-30T03:12:40.901Z"
     }
   ]
 }

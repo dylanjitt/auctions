@@ -14,6 +14,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { User } from '../interfaces/userInterface';
+import { useTranslation } from 'react-i18next';
 
 interface UserTableProps {
   users: User[];
@@ -22,23 +23,25 @@ interface UserTableProps {
 }
 
 export const UserTable: React.FC<UserTableProps> = ({ users, onEdit, onDelete }) => {
+  const { t } = useTranslation();
+
   if (users.length === 0) {
-    return <Typography>No hay usuarios disponibles.</Typography>;
+    return <Typography>{t('user.noUsers')}</Typography>;
   }
 
   return (
-    <TableContainer sx={{width:"80vh"}} component={Paper}>
+    <TableContainer sx={{ width: '80vh' }} component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Avatar</TableCell>
-            <TableCell>Username</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell>{t('user.avatar')}</TableCell>
+            <TableCell>{t('user.username')}</TableCell>
+            <TableCell>{t('user.role')}</TableCell>
+            <TableCell>{t('user.actions')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map(u => (
+          {users.map((u) => (
             <TableRow key={u.id}>
               <TableCell>
                 <Avatar src={u.avatar} alt={u.username} />

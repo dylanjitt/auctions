@@ -1,4 +1,3 @@
-// src/components/AuctionRoom.tsx
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../services/productService";
@@ -29,6 +28,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import type { Bid } from "../interfaces/bidInterface";
 import { userService } from "../services/userService";
+import { useTranslation } from 'react-i18next';
 
 interface BidEntry {
   user: string;
@@ -36,15 +36,10 @@ interface BidEntry {
   timestamp: string;
 }
 
-const getBidValidationSchema = (currentPrice: number) =>
-  Yup.object({
-    bidAmount: Yup.number()
-      .typeError('Please enter a valid number')
-      .required('Bid is required')
-      .moreThan(currentPrice, `Bid must be higher than current price ($${currentPrice})`),
-  });
+
 
 export default function AuctionRoom() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { user } = useContext(UserContext)!;
 
@@ -54,6 +49,17 @@ export default function AuctionRoom() {
   const [winningBid, setWinningBid] = useState<BidEntry | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const getBidValidationSchema = (currentPrice: number) =>
+    Yup.object({
+      bidAmount: Yup.number()
+        .typeError(t('auctionRoom.placeBid.validation.number'))
+        .required(t('auctionRoom.placeBid.validation.required'))
+        .moreThan(
+          currentPrice,
+          t('auctionRoom.placeBid.validation.min', { price: currentPrice })
+        ),
+    });
 
   // Load product and initial bids
   useEffect(() => {
@@ -101,8 +107,8 @@ export default function AuctionRoom() {
     // update state
     setCurrentPrice(incoming.amount);
     setBids(prev => [entry, ...prev]);
-    setSuccess(`New bid received: $${incoming.amount}`);
-    console.log('success:',success)
+    setSuccess(t('auctionRoom.newBid', { amount: incoming.amount }));
+    console.log('success:', success)
     setTimeout(() => setSuccess(''), 3000);
   }, [currentPrice]);
 
@@ -134,17 +140,30 @@ export default function AuctionRoom() {
     }
   });
 
+  const formatAuctionStartDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleString(undefined, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
   if (!product) {
     return error
-      ? <Alert severity="error">{error}</Alert>
-      : <Typography>Loading auction...</Typography>;
+      ? <Alert severity="error">{t('auctionRoom.error')}</Alert>
+      : <Typography>{t('auctionRoom.loading')}</Typography>;
   }
 
   return (
     <Box sx={{ p: 4 }}>
       <Grid container spacing={4}>
         {/* Left: Image + bid history */}
-        <Grid size={{xs:12,md:6}}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardMedia
               component="img"
@@ -158,9 +177,9 @@ export default function AuctionRoom() {
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>User</TableCell>
-                  <TableCell align="right">Amount</TableCell>
-                  <TableCell align="right">Time</TableCell>
+                  <TableCell>{t('auctionRoom.bidHistory.user')}</TableCell>
+                  <TableCell align="right">{t('auctionRoom.bidHistory.amount')}</TableCell>
+                  <TableCell align="right">{t('auctionRoom.bidHistory.time')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -177,45 +196,55 @@ export default function AuctionRoom() {
         </Grid>
 
         {/* Right: Details + form or result */}
-        <Grid size={{xs:12,md:6}}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h4" gutterBottom>{product.titulo}</Typography>
               <Typography variant="body1" gutterBottom>{product.descripcion}</Typography>
-              <Paper elevation={2} sx={{ p:2, mb:3 }}>
-                <Typography variant="h6" gutterBottom>Auction Status</Typography>
+              <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  {t('auctionRoom.status')}
+                </Typography>
 
                 {remaining <= 0 ? (
-                  winningBid 
-                    ? <Card variant="outlined" sx={{ p:2, background:'#f0f0f0' }}>
-                        <Typography>
-                          Sold for <strong>${winningBid.amount}</strong> to <strong>{winningBid.user}</strong>
-                        </Typography>
-                      </Card>
-                    : <Typography>No bids were placed.</Typography>
+                  winningBid
+                    ? <Card variant="outlined" sx={{ p: 2, background: '#f0f0f0' }}>
+                      <Typography>
+                        {t('auctionRoom.soldFor')} <strong>${winningBid.amount}</strong> {t('auction.to')} <strong>{winningBid.user}</strong>
+                      </Typography>
+                    </Card>
+                    : <Typography>{t('auctionRoom.noBids')}</Typography>
+                ) : new Date(product.fechaInicio) > new Date() ? (
+                  <Typography>
+                    {t('auctionRoom.comingSoon', {
+                      date: formatAuctionStartDate(product.fechaInicio)
+                    })}
+                  </Typography>
                 ) : (
                   <>
-                    <Typography>Current Price: <strong>${currentPrice}</strong></Typography>
-                    <Box sx={{ pt:1 }}>
-                      <Timer remainingSeconds={Math.ceil(remaining/1000)} />
+                    <Typography>
+                      {t('auctionRoom.currentPrice')}: <strong>${currentPrice}</strong>
+                    </Typography>
+                    <Box sx={{ pt: 1 }}>
+                      <Timer remainingSeconds={Math.ceil(remaining / 1000)} />
                     </Box>
                   </>
                 )}
               </Paper>
 
-              {remaining > 0 && user && (
-                <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt:3 }}>
+              {remaining > 0 && user && new Date(product.fechaInicio) <= new Date() &&(
+                <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                   <TextField
                     fullWidth
                     name="bidAmount"
-                    label="Your Bid Amount"
+                    label={t('auctionRoom.placeBid.label')}
                     type="number"
                     value={formik.values.bidAmount}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.bidAmount && Boolean(formik.errors.bidAmount)}
                     helperText={formik.touched.bidAmount && formik.errors.bidAmount}
-                    sx={{ mb:2 }}
+                    sx={{ mb: 2 }}
                     inputProps={{ min: currentPrice + 1, step: 1 }}
                   />
                   <Button
@@ -224,12 +253,14 @@ export default function AuctionRoom() {
                     variant="contained"
                     disabled={!formik.isValid || formik.isSubmitting}
                   >
-                    Place Bid
+                    {t('auctionRoom.placeBid.button')}
                   </Button>
                 </Box>
               )}
               {!user && remaining > 0 && (
-                <Alert severity="info">Please log in to place a bid</Alert>
+                <Alert severity="info">
+                  {t('auctionRoom.placeBid.loginPrompt')}
+                </Alert>
               )}
             </CardContent>
           </Card>

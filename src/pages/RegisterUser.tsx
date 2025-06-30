@@ -14,16 +14,20 @@ import { userService } from "../services/userService";
 import { uploadToCloudinary } from "../util/uploader";
 import GavelIcon from '@mui/icons-material/Gavel';
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const registerSchema = yup.object({
-  username: yup.string().required("El username es requerido"),
-  //rol: yup.string().oneOf(["admin", "user"]).required("El rol es requerido"),
-  avatar: yup.string()
-  //.url("Debe ser una URL válida")
-  .nullable(),
-});
+
 
 function RegisterPage() {
+
+  const {t} = useTranslation()
+
+  const registerSchema = yup.object({
+    username: yup.string().required(t('userReq')),
+    avatar: yup.string().nullable(),
+  });
+
+
   const navigate = useNavigate();
   const [isUploading, setIsUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -37,11 +41,12 @@ function RegisterPage() {
     onSubmit: async (values) => {
       try {
         await userService.createUser({...values,rol:'user'});
-        alert("Usuario registrado con éxito");
+
+        alert(t('userRegSuccess'));
         navigate("/login");
       } catch (error) {
         console.error("Error al registrar:", error);
-        alert("Error al registrar. Revisa consola.");
+        alert(t('userRegFail'));
       }
     }
   });
@@ -61,7 +66,7 @@ function RegisterPage() {
       formik.setFieldValue("avatar", imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Error al subir la imagen");
+      alert(t('imgFail'));
     } finally {
       setIsUploading(false);
     }
@@ -93,14 +98,14 @@ function RegisterPage() {
           }}
         >
           <GavelIcon sx={{marginRight:2, width:80,height:80}}/>
-          <h1>Crear Cuenta</h1>
+          <h1>{t('createAcc')}</h1>
 
 
           <form onSubmit={formik.handleSubmit}>
             {/* Username */}
             <TextField
               fullWidth
-              label="Username"
+              label={t("username")}
               variant="filled"
               name="username"
               onChange={formik.handleChange}
@@ -113,43 +118,6 @@ function RegisterPage() {
               sx={{ marginBottom: 3 }}
             />
 
-            {/* Role */}
-            {/* <Select
-              fullWidth
-              displayEmpty
-              variant="filled"
-              name="rol"
-              value={formik.values.rol}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.rol && Boolean(formik.errors.rol)}
-              sx={{ marginBottom: 3 }}
-            >
-              <MenuItem value="" disabled>
-                Selecciona un rol
-              </MenuItem>
-              <MenuItem value="user">Usuario</MenuItem>
-              <MenuItem value="admin">Administrador</MenuItem>
-            </Select>
-            {formik.touched.rol && formik.errors.rol && (
-              <Typography variant="caption" color="error">
-                {formik.errors.rol}
-              </Typography>
-            )} */}
-
-            {/* Avatar URL */}
-            {/* <TextField
-              fullWidth
-              label="Avatar URL (opcional)"
-              variant="filled"
-              name="avatar"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.avatar}
-              helperText={formik.touched.avatar && formik.errors.avatar}
-              error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-              sx={{ marginBottom: 3 }}
-            /> */}
             {/* Avatar Upload */}
             <Box
               onDrop={handleDrop}
@@ -186,10 +154,10 @@ function RegisterPage() {
               ) : (
                 <>
                   <Typography variant="body2" sx={{ mb: 1 }}>
-                    Arrastra y suelta tu imagen aquí
+                    {t('dragImg')}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    O haz clic para seleccionar
+                    {t('clickImg')}
                   </Typography>
                 </>
               )}
@@ -211,7 +179,7 @@ function RegisterPage() {
                   variant="outlined"
                   sx={{ mt: 1 }}
                 >
-                  {previewImage || formik.values.avatar ? "Cambiar imagen" : "Seleccionar imagen"}
+                  {previewImage || formik.values.avatar ? t('changeImg') : t('selectImg')}
                 </Button>
               </label>
             </Box>
@@ -229,7 +197,7 @@ function RegisterPage() {
               }}
               disabled={!(formik.isValid && formik.dirty)}
             >
-              Registrarse
+              {t('register')}
             </Button>
           </form>
 
@@ -247,7 +215,7 @@ function RegisterPage() {
               borderWidth: 2,
             }}
           >
-            Volver al Login
+            {t('backLogin')}
           </Button>
         </CardContent>
       </Box>
