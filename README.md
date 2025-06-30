@@ -43,7 +43,7 @@ npx json-server src/users.json --port 3001
 ### Terminal 2 - Productos (puerto 3002)
 
 ```bash
-npx json-server --watch products.json --port 3002
+npx json-server --watch src/products.json --port 3002
 ```
 
 ---
