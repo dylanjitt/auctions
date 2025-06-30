@@ -153,4 +153,8 @@ export const esJSON ={
     role: 'Rol',
     actions: 'Acciones'
   },
+  error: {
+  title: "¡Algo salió mal!",
+  reload: "Recargar página"
+}
 };

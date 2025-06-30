@@ -9,7 +9,6 @@ import {
   TableRow,
   Paper,
   Avatar,
-  Typography,
   Box,
 } from '@mui/material';
 
