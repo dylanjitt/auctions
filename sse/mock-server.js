@@ -67,6 +67,24 @@ server.post('/api/bids', (req, res) => {
   res.status(201).json(bid);
 });
 
+//chat
+server.post('/api/chatMessages', (req, res) => {
+  const msg = req.body;
+  msg.id = Date.now().toString();
+  msg.timestamp = new Date().toISOString();
+
+  // persistir
+  const db = router.db;
+  db.get('chatMessages').push(msg).write();
+
+  // notificar SSE
+  const stream = getEventStream(msg.productId);
+  console.log('🔴 Sending SSE chat message:', msg);
+  stream.send({ type: 'NEW_CHAT_MESSAGE', payload: msg });
+
+  res.status(201).json(msg);
+});
+
 server.use('/api', router);
 
 server.listen(3003, () => {

@@ -17,7 +17,9 @@ function getEventStream(productId) {
         const payload = `event: ${type}\ndata: ${JSON.stringify({payload:data.payload})}\n\n`;
         console.log('Sending SSE message for product:', productId, payload);
         this.clients.forEach(res => {res.write(payload);
-          res.flush && res.flush();
+          if (typeof res.flush === 'function') {
+            res.flush();
+          }
         }
       );
       }

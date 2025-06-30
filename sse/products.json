@@ -50,7 +50,7 @@
       "titulo": "Apple iPhone 16 Pro Max",
       "descripcion": "Dispositivo de Gama Alta iPhone 16 Pro Max chip A18 Pro",
       "imagen": "https://www.tiendaamiga.com.bo/media/catalog/product/cache/deb88dadd509903c96aaa309d3e790dc/c/e/celular_apple_iphone_16_pro_256gb_titanio_negro_2__2.png",
-      "precioBase": 8000,
+      "precioBase": 8001,
       "duracion": 140400,
       "fechaInicio": "2025-06-29T00:20:00.203Z"
     }
@@ -516,6 +516,43 @@
       "userId": "3",
       "amount": 363,
       "date": "2025-06-30T03:12:40.901Z"
+    },
+    {
+      "id": "xUacH49",
+      "productId": "74977a19-e137-4420-907e-735b91bf9f0a",
+      "userId": "3",
+      "amount": 8001,
+      "date": "2025-06-30T11:25:32.159Z"
+    },
+    {
+      "id": 1751283049716,
+      "productId": "74977a19-e137-4420-907e-735b91bf9f0a",
+      "userId": "3",
+      "amount": 8002,
+      "date": "2025-06-30T11:30:49.684Z",
+      "timestamp": "2025-06-30T11:30:49.716Z"
+    }
+  ],
+  "chatMessages": [
+    {
+      "productId": "p4",
+      "username": "dieguito",
+      "timestamp": "2025-06-30T15:03:45.000Z",
+      "content": "¿Alguien más va a ofertar?"
+    },
+    {
+      "productId": "74977a19-e137-4420-907e-735b91bf9f0a",
+      "username": "maria",
+      "content": "hola",
+      "timestamp": "2025-06-30T11:40:51.103Z",
+      "id": "1751283651103"
+    },
+    {
+      "productId": "74977a19-e137-4420-907e-735b91bf9f0a",
+      "username": "shadow",
+      "content": "hola uwu",
+      "timestamp": "2025-06-30T11:41:08.981Z",
+      "id": "1751283668981"
     }
   ]
 }

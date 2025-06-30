@@ -1,8 +1,11 @@
 import bidInstance from "../api/bidInstance";
 import jsonServerProductInstance from "../api/productsInstance";
 import type { Bid } from "../interfaces/bidInterface";
+import type { ChatMessage } from "../interfaces/ChatMessageInterface";
 import type { Product } from "../interfaces/productInterface";
+import { v4 as uuidv4 } from 'uuid';
 export const productService = {
+  
   async getProducts(){
     try {
       const response = await jsonServerProductInstance.get("/products");
@@ -68,5 +71,19 @@ export const productService = {
   getBidsByUser: async (userId: string) => {
     const response = await jsonServerProductInstance.get(`/bids?userId=${userId}&_sort=timestamp&_order=desc`);
     return response.data;
-  }
+  },
+  async getChatMessages(productId: string) {
+    const response = await jsonServerProductInstance.get(
+      `/chatMessages?productId=${productId}&_sort=timestamp&_order=asc`
+    );
+    return response.data;
+  },
+  async createChatMessage(msg: Omit<ChatMessage, 'id'>) {
+    // Generamos un id aquí para que lodash-id no falle
+    const withId = { ...msg, id: uuidv4() };
+    const response = await jsonServerProductInstance.post('/chatMessages', withId);
+    // También enviamos al SSE por el mock-server
+    await bidInstance.post('/chatMessages', withId);
+    return response.data;
+  },
 }

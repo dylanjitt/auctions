@@ -29,6 +29,7 @@ import * as Yup from 'yup';
 import type { Bid } from "../interfaces/bidInterface";
 import { userService } from "../services/userService";
 import { useTranslation } from 'react-i18next';
+import { ChatPanel } from "../components/ChatPanel";
 
 interface BidEntry {
   user: string;
@@ -197,12 +198,12 @@ export default function AuctionRoom() {
 
         {/* Right: Details + form or result */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <Card sx={{ height: '100%' }}>
+          <Card sx={{ height: '100%', backgroundColor: '#fafafa'}}>
             <CardContent>
               <Typography variant="h4" gutterBottom>{product.titulo}</Typography>
-              <Typography variant="body1" gutterBottom>{product.descripcion}</Typography>
+              <Typography variant="body1" sx={{marginBottom:2}} gutterBottom>{product.descripcion}</Typography>
               <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6"  gutterBottom>
                   {t('auctionRoom.status')}
                 </Typography>
 
@@ -210,7 +211,7 @@ export default function AuctionRoom() {
                   winningBid
                     ? <Card variant="outlined" sx={{ p: 2, background: '#f0f0f0' }}>
                       <Typography>
-                        {t('auctionRoom.soldFor')} <strong>${winningBid.amount}</strong> {t('auction.to')} <strong>{winningBid.user}</strong>
+                        {t('auctionRoom.soldFor')} <strong>${winningBid.amount}</strong> {t('auctionRoom.to')} <strong>{winningBid.user}</strong>
                       </Typography>
                     </Card>
                     : <Typography>{t('auctionRoom.noBids')}</Typography>
@@ -232,7 +233,7 @@ export default function AuctionRoom() {
                 )}
               </Paper>
 
-              {remaining > 0 && user && new Date(product.fechaInicio) <= new Date() &&(
+              {remaining > 0 && user && new Date(product.fechaInicio) <= new Date() && (
                 <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                   <TextField
                     fullWidth
@@ -261,6 +262,12 @@ export default function AuctionRoom() {
                 <Alert severity="info">
                   {t('auctionRoom.placeBid.loginPrompt')}
                 </Alert>
+              )}
+              {/* ...existing bidding UI... */}
+              {remaining > 0 && product && (
+                <Box sx={{ mt: 4 }}>
+                  <ChatPanel productId={product.id} />
+                </Box>
               )}
             </CardContent>
           </Card>
