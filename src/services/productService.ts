@@ -36,15 +36,14 @@ export const productService = {
     }
   }, 
 
-  async updateProduct(
-    id: string,
-    product: Partial<Product>
-  ): Promise<Product> {
+  async updateProduct(id: string, product: Partial<Product>): Promise<Product> {
     try {
-      const response = await jsonServerProductInstance.patch(`/products/${encodeURIComponent(id)}`, product);
+      console.log("🔄 Updating product:", id, product);
+      const response = await jsonServerProductInstance.patch(`/products/${id}`, product);
+      console.log("✅ Product updated", response.data);
       return response.data;
     } catch (error) {
-      console.error("Failed to update product", error);
+      console.error("❌ Failed to update product", error);
       throw error;
     }
   },
@@ -59,9 +58,18 @@ export const productService = {
   },
 
   createBid: async (bid: Bid) => {
-    const response = await jsonServerProductInstance.post('/bids', bid);
-    await bidInstance.post('/bids', bid);
-    return response.data;
+    try {
+      const response = await jsonServerProductInstance.post('/bids', bid);
+      try {
+        await bidInstance.post('/bids', bid); // fire and forget SSE
+      } catch (e) {
+        console.warn("SSE POST failed, continuing anyway", e);
+      }
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create bid", error);
+      throw error;
+    }
   },
 
   getBids: async (productId: string) => {

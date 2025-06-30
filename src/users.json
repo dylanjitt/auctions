@@ -33,13 +33,6 @@
       "usuario": "keanu"
     },
     {
-      "id": "dffb",
-      "username": "peso deidad",
-      "rol": "admin",
-      "usuario": "peso deidad",
-      "avatar": "https://ui-avatars.com/api/?name=peso deidad"
-    },
-    {
       "id": "e5b4",
       "username": "Peso Deidad",
       "rol": "user",
@@ -50,6 +43,18 @@
       "username": "Kendrick Lamar",
       "avatar": "https://ui-avatars.com/api/?name=Kendrick Lamar",
       "rol": "admin"
+    },
+    {
+      "id": "0a0b",
+      "username": "Lil Nas",
+      "avatar": "https://res.cloudinary.com/dampoknh7/image/upload/v1751311265/images_xkygrd.jpg",
+      "rol": "user"
+    },
+    {
+      "id": "7c16",
+      "username": "Tyler O",
+      "avatar": "https://res.cloudinary.com/dampoknh7/image/upload/v1751311826/900x900_xjv9jc.avif",
+      "rol": "user"
     }
   ]
 }

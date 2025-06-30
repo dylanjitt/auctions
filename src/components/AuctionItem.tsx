@@ -11,6 +11,7 @@ import { useCountdown } from '../hooks/useAuction';
 import Timer from './Timer';
 import type { Product } from '../interfaces/productInterface';
 
+
 interface AuctionItemProps {
   product: Product;
   children?: ReactNode;
@@ -49,10 +50,10 @@ AuctionItem.Content = ({ titulo, descripcion, precioBase }) => {
   return (
     <CardContent sx={{ height: 85 }}>
       <Typography gutterBottom variant="h5">
-        {t('auction.title', { title: titulo })}
+       {titulo }
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        {t('auction.description', { description: descripcion })}
+        { descripcion }
       </Typography>
       <Typography variant="body1" color="text.primary">
         {t('auction.basePrice')}: ${precioBase}

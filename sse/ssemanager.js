@@ -1,4 +1,3 @@
-// sseManager.js
 const streams = {};
 
 function getEventStream(productId) {

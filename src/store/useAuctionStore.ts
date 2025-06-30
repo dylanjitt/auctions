@@ -15,7 +15,7 @@ export const useAuctionStore = create<AuctionState>(set => ({
   updatePrice: (id, price) =>
     set(state => ({
       products: state.products.map(p =>
-        p.id.toString() === id.toString() ? { ...p, precioBase: price } : p
+        p.id === id? { ...p, precioBase: price } : p
       )
     })),
   unloadProducts: () => set({ products:[] }),

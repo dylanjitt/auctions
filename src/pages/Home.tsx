@@ -88,7 +88,7 @@ export default function Home() {
       
       {renderSection(t('actualAuctions'), current)}
       {renderSection(t('nextAuctions'), upcoming)}
-      {renderSection(t('nextAuctions'), concluded)}
+      {renderSection(t('overAuctions'), concluded)}
     </Box>
   );
 }
