@@ -1,7 +1,7 @@
-// src/components/BidHistory.tsx
-import React, { useMemo, useState } from 'react';
-import { useBidHistory, type EnrichedBid } from '../hooks/useBidHistory';
+import { useMemo, useState } from 'react';
+import { useBidHistory} from '../hooks/useBidHistory';
 import { HistoryTable } from '../components/HistoryTable';
+import type { EnrichedBid } from '../interfaces/EnrichBid';
 import {
   Typography,
   Box,

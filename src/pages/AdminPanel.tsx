@@ -1,5 +1,5 @@
 import { useEffect, useState, type FC } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import type { Product } from '../interfaces/productInterface';
 import { productService } from '../services/productService';
@@ -92,8 +92,9 @@ const AdminPanel: FC = () => {
         onClick={() => handleOpen()} 
         disabled={isLoading}
         title="Add New Product"
+        sx={{width:50,height:50}}
       >
-        <AddIcon />
+        <AddIcon sx={{width:30,height:30}} />
       </IconButton>
       
       <Grid container spacing={2}>

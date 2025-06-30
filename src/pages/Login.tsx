@@ -1,12 +1,14 @@
 
 import { Box, Button, CardContent,  Container, TextField } from "@mui/material";
-import { UserContext } from '../context/UserContext';
+// import { UserContext } from '../context/UserContext';
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { login } from "../services/authService";
 import Toast from "../components/Toast";
+import { useAuthStore } from "../store/authStore";
+import GavelIcon from '@mui/icons-material/Gavel';
 
 const loginSchema = yup.object({
   username: yup
@@ -22,7 +24,8 @@ function LoginPage () {
 
   const [errorMessage,seterrorMessage]=useState("");
 
-  const userContext = useContext(UserContext)
+  // const userContext = useContext(UserContext)
+  const loginUser = useAuthStore((state) => state.loginUser);
 
   const formik = useFormik({
     initialValues: {
@@ -44,7 +47,8 @@ function LoginPage () {
           return;
         }
         console.log(responseLogin)
-        userContext?.setUser(responseLogin)
+        loginUser(responseLogin)
+        //userContext?.setUser(responseLogin)
 
         const dir = responseLogin.rol==='admin'?'/admin':'/home'
 
@@ -91,6 +95,7 @@ function LoginPage () {
             borderRadius: 5
           }}
         >
+          <GavelIcon sx={{marginRight:2, width:80,height:80}}/>
           {/* <CardMedia
             component="img"
             height="200"

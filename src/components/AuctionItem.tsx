@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useCountdown } from '../hooks/useAuction';
 import Timer from './Timer';
@@ -25,7 +24,7 @@ export const AuctionItem: FC<AuctionItemProps> & {
   TimerSection: FC<Pick<Product, 'duracion' | 'fechaInicio'>>;
   Actions: FC;
 } = React.memo(({ product,children }:AuctionItemProps) => (
-  <Card sx={{ width: 380, height:600 }}>
+  <Card sx={{ width: 380}}>
     <AuctionItem.Image src={product.imagen} title={product.titulo} />
     <AuctionItem.Content
       titulo={product.titulo}
@@ -45,7 +44,7 @@ AuctionItem.Image = ({ src, title }) => (
 );
 
 AuctionItem.Content = ({ titulo, descripcion, precioBase }) => (
-  <CardContent>
+  <CardContent sx={{height:85}}>
     <Typography gutterBottom variant="h5" component="div">
       {titulo}
     </Typography>

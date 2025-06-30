@@ -4,16 +4,7 @@ import { productService } from '../services/productService';
 import type { Bid } from '../interfaces/bidInterface';
 import type { Product } from '../interfaces/productInterface';
 
-// Enriched bid entry para la tabla
-export interface EnrichedBid {
-  id: string;
-  productId: string;
-  productTitle: string;
-  productImage: string;
-  amount: number;
-  timestamp: string;
-  status: 'Active' | 'Ended';
-}
+import type{ EnrichedBid } from '../interfaces/EnrichBid';
 
 export const useBidHistory = (): EnrichedBid[] => {
   const { user } = useContext(UserContext)!;
@@ -42,7 +33,7 @@ export const useBidHistory = (): EnrichedBid[] => {
             };
           })
         );
-        setHistory(enriched);
+        setHistory(enriched.reverse());
       } catch (err) {
         console.error('Error loading bid history:', err);
       }

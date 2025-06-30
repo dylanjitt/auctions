@@ -1,62 +1,7 @@
-// import { useEffect } from 'react';
-// import Grid from '@mui/material/Grid';
-// import { productService } from '../services/productService';
-// import { useAuctionStore } from '../store/useAuctionStore';
-// import { AuctionItem } from '../components/AuctionItem';
-// import { useNavigate } from 'react-router-dom';
-// import { Button } from '@mui/material';
-// const Home = () => {
-//   const setProducts = useAuctionStore((state) => state.setProducts);
-//   const products = useAuctionStore((state) => state.products);
-
-//   const navigate = useNavigate()
-
-//   useEffect(() => {
-//     const getProducts = async () => {
-//       try {
-//         const items = await productService.getProducts();
-//         setProducts(items);
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     };
-//     getProducts();
-//   }, [setProducts]);
-
-//   const goToAuctionRoom = (id: string) => {
-//     navigate(`auction/${id}`); 
-//   }
-
-//   return (
-//     <div style={{display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',width:'100%'}}>
-//       <h1>Subastas</h1>
-//       <Grid container spacing={2} sx={{ padding: 2, display:'flex',alignItems:'center',justifyContent:"center" }}>
-//       {products.map((product) => (
-//         <Grid size={{xs:12, sm:6, md:4,xl:3}} key={product.id}>
-//           <AuctionItem product={product} >
-//           <AuctionItem.Actions>
-//             <Button 
-//               size="small" 
-//               onClick={()=>goToAuctionRoom(product.id)}
-//             >
-//               Place Bid
-//             </Button>
-//           </AuctionItem.Actions>
-          
-//           </AuctionItem>
-//         </Grid>
-//       ))}
-//     </Grid>
-//     </div>
-    
-//   );
-// };
-
-// export default Home;
-
-// src/pages/Home.tsx
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { productService } from '../services/productService';
 import { useAuctionStore } from '../store/useAuctionStore';
 import { AuctionItem } from '../components/AuctionItem';
@@ -75,7 +20,7 @@ interface PriceListenerProps {
 function PriceListener({ productId, onBid, duration, startTime }: PriceListenerProps) {
   const remaining = useCountdown(duration, startTime);
   useAuction(remaining > 0 ? productId : undefined, onBid);
-  return null; // Este componente no renderiza nada visible
+  return null;
 }
 
 export default function Home() {
@@ -84,7 +29,6 @@ export default function Home() {
   const updatePrice = useAuctionStore(s => s.updatePrice);
   const navigate = useNavigate();
 
-  // Carga inicial de productos
   useEffect(() => {
     (async () => {
       try {
@@ -102,30 +46,47 @@ export default function Home() {
 
   const goToAuctionRoom = (id: string) => navigate(`auction/${id}`);
 
-  return (
-    <div style={{ textAlign: 'center', width: '100%' }}>
-      <h1>Subastas</h1>
+  const now = Date.now();
+  const current = products.filter(p => {
+    const start = new Date(p.fechaInicio).getTime();
+    const end = start + p.duracion * 1000;
+    return start <= now && now <= end;
+  });
+  const upcoming = products.filter(p => new Date(p.fechaInicio).getTime() > now);
+  const concluded = products.filter(p => {
+    const start = new Date(p.fechaInicio).getTime();
+    const end = start + p.duracion * 1000;
+    return end < now;
+  });
+
+  const renderSection = (title: string, list: typeof products) => (
+    <Box sx={{ mt: 4 }}>
+      <Typography variant="h4" sx={{ mb: 2 }}>{title}</Typography>
       <Grid container spacing={2} sx={{ p: 2 }}>
-        {products.map(p => (
-          <Grid size={{xs:12, sm:6, md:4,xl:3}} key={p.id}>
-            {/* Listener que actualiza precio en tiempo real */}
+        {list.map(p => (
+          <div key={p.id} onClick={() => goToAuctionRoom(p.id)} style={{cursor:'pointer'}}>
+          <Grid size={{xs:12,sm:6,md:4,xl:3}} key={p.id}>
             <PriceListener
               productId={p.id}
               onBid={handleBidReceived}
               duration={p.duracion}
               startTime={p.fechaInicio}
             />
-
-            <AuctionItem product={p}>
-              <AuctionItem.Actions>
-                <Button size="small" onClick={() => goToAuctionRoom(p.id)}>
-                  Place Bid
-                </Button>
-              </AuctionItem.Actions>
-            </AuctionItem>
+            <AuctionItem product={p}/>
+            
           </Grid>
+          </div>
         ))}
       </Grid>
-    </div>
+    </Box>
+  );
+
+  return (
+    <Box sx={{ textAlign: 'center', width: '100%' }}>
+      
+      {renderSection('Subastas Actuales', current)}
+      {renderSection('Próximas Subastas', upcoming)}
+      {renderSection('Subastas Concluidas', concluded)}
+    </Box>
   );
 }

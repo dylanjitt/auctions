@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { userService } from "../services/userService";
 import { uploadToCloudinary } from "../util/uploader";
+import GavelIcon from '@mui/icons-material/Gavel';
 import { useCallback, useState } from "react";
 
 const registerSchema = yup.object({
@@ -91,7 +92,7 @@ function RegisterPage() {
             borderRadius: 5,
           }}
         >
-
+          <GavelIcon sx={{marginRight:2, width:80,height:80}}/>
           <h1>Crear Cuenta</h1>
 
 

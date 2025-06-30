@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { productService } from '../services/productService';
-import { getEventStream } from '../services/sseService';
+// import { getEventStream } from '../services/sseService';
 import type { Bid } from '../interfaces/bidInterface';
 
 export const useCountdown = (duration: number, startTime: string) => {

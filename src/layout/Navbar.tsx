@@ -1,12 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
-import { UserContext } from '../context/UserContext';
+// import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
+import GavelIcon from '@mui/icons-material/Gavel';
 
 const NavBar: React.FC = () => {
-  const { user, setUser } = useContext(UserContext)!;
+  // const { user, setUser } = useContext(UserContext)!;
+  const {user,logoutUser}=useAuthStore()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -15,21 +19,33 @@ const NavBar: React.FC = () => {
   const handleClose = () => setAnchorEl(null);
 
   const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user'); // Optional: if persisting user
+    logoutUser()
+    // localStorage.removeItem('user')
+    localStorage.removeItem('auth')
     navigate('/login');
   };
 
+  const goToHome = () =>{
+    const redir=user.rol=='user'?'/home':'/admin'
+    navigate(redir)
+  }
 
   const handleUserHistory = () => navigate('/home/bidHistory');
   const handleUserManagement = () => navigate('/admin/userAdmin');
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <div style={{display:'flex'}}>
+          <div style={{cursor:'pointer'}} onClick={goToHome}>
+            <GavelIcon  height={15} sx={{marginRight:2}}/>
+          </div>
+          
         <Typography variant="h6" component="div">
           Hola, {user?.username}
         </Typography>
+        </div>
+        
 
         {user && (
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>

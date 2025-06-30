@@ -9,14 +9,19 @@ import AuctionRoom from "../pages/AuctionRoom"
 import UserAdmin from "../pages/UserAdmin"
 import RegisterPage from "../pages/RegisterUser"
 import BidHistory from "../pages/BidHistory"
+import { RoleBasedRedirect } from "./RoleBasedRedirect"
+import { useAuthStore } from "../store/authStore"
 
 export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage/>} />
+      <Route path="/" element={<RoleBasedRedirect />} />
+        <Route path="/login" element={useAuthStore.getState().isAuthenticated?
+          <Navigate to="/" replace/> : <LoginPage/>
+        } />
+        {/* <Route path="/login" element={<LoginPage/>} />  */}
+        <Route path="/register" element={<RegisterPage/>} /> 
 
         <Route element={
           <AuthGuard>

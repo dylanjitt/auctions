@@ -1,28 +1,38 @@
-import React, { createContext, useState, useContext, type ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { useAuthStore } from '../store/authStore';
+import { userService } from '../services/userService';
 import type { User } from '../interfaces/userInterface';
-
 
 
 interface UserContextType {
   user: User | null;
-  setUser: (user: User | null) => void;
+  setUser: (user: User) => void;
 }
 
-// Create the context with default undefined
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Provider props interface
-interface UserProviderProps {
-  children: ReactNode;
-}
-
-// Context Provider component
-export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { user: authUser } = useAuthStore();
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(()=>{
-    console.log("Current user:",user)
-  },[user])
+  useEffect(() => {
+    const fetchData = async () => {
+      if (authUser?.id) {
+        try {
+          const response = await userService.getUsers();
+          const customerData = response.find((customer: User) => customer.id === authUser.id);
+
+          if (customerData) {
+            setUser(customerData);
+          }
+        } catch (error) {
+          console.error('Error fetching customer data:', error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [authUser?.id]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -31,11 +41,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   );
 };
 
-// Optional: Custom hook for easier access
-export function useUser() {
+export const useUser = () => {
   const context = useContext(UserContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+  if (context === undefined) {
+    throw new Error('useUser debe usarse dentro de un UserProvider');
   }
   return context;
-}
+};

@@ -1,10 +1,12 @@
 import {create} from 'zustand';
+// import { persist } from "zustand/middleware";
 import type { Product } from '../interfaces/productInterface';
 
 interface AuctionState {
   products: Product[];
   setProducts: (items: Product[]) => void;
   updatePrice: (id: string, newPrice: number) => void;
+  unloadProducts: ()=>void;
 }
 
 export const useAuctionStore = create<AuctionState>(set => ({
@@ -16,4 +18,5 @@ export const useAuctionStore = create<AuctionState>(set => ({
         p.id.toString() === id.toString() ? { ...p, precioBase: price } : p
       )
     })),
+  unloadProducts: () => set({ products:[] }),
 }));

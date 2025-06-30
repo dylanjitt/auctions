@@ -102,6 +102,7 @@ export default function AuctionRoom() {
     setCurrentPrice(incoming.amount);
     setBids(prev => [entry, ...prev]);
     setSuccess(`New bid received: $${incoming.amount}`);
+    console.log('success:',success)
     setTimeout(() => setSuccess(''), 3000);
   }, [currentPrice]);
 
